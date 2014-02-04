@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")"></script>
+    <link href="@Url.Content("~/Content/layout.css")" rel="stylesheet" type="text/css" />
+   	<style>
+   	    p, body, td { font-family: Tahoma, Arial, Sans-Serif; font-size: 10pt; }
+   	</style>
+    <title></title>
+</head>
+<body style="padding:10px">
+   <form id="f" method="post" action="@Url.Action("Edit")">
+        <h3>Edit Appintment</h3>
+        <div>PatientId @Html.DisplayText("PatientId")</div>    
+        <div>PhysicianId @Html.DisplayText("PhysicianId")</div>
+        <div><b>Title</b></div>
+        <div>@Html.TextBox("Title")</div><!-- NOTE: USE THE FILEDS COME FROM DATABASE APPOINTMENT TABLE -->
+    
+        <div><b>Start</b></div>
+        <div>@Html.TextBox("StartDateTime")</div>
+
+        <div><b>End</b></div>
+        <div>@Html.TextBox("EndDateTime")</div>
+
+        <div><b>Reason For Appointment</b></div>
+        <div>@Html.TextBox("ReasonForAppointment")</div>
+        @{
+            if (Html.Value("IsHomeVisit").ToString() == "True"){
+                <div>Home Visit <input  id="IsHomeVisit" name="IsHomeVisit" type="checkbox" checked="checked" /></div>
+            }
+            else
+            {
+                <div>Home Visit <input  id="IsHomeVisit" name="IsHomeVisit" type="checkbox" /></div>
+            }
+        }
+        
+       
+        @Html.Hidden("PatientId")
+        @Html.Hidden("PhysicianId")
+        @Html.Hidden("Id")
+        <div class="space">
+            <input type="submit" value="Save" />
+            <input type="button" id="btnClose" value="Cancel" />
+        </div>
+        <div class="space">&nbsp;</div>
+    </form>
+
+    <script type="text/javascript">
+        $("#btnClose").click(function () {
+            close();
+        });
+        function close(result) {
+            //alert("close()");
+            if (parent && parent.DayPilot && parent.DayPilot.ModalStatic) {
+                parent.DayPilot.ModalStatic.close(result);
+            }
+        }
+        
+        
+        $("#f").submit(function () {
+            var f = $("#f");
+            $.post(f.action, f.serialize(), function (result) {
+                close(eval(result));
+            });
+            return false;
+        });
+
+        $(document).ready(function () {
+            $("#Text").focus();
+        });
+    
+    </script>
+</body>
+</html>

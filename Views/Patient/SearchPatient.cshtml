@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "SearchPatient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Search Patients")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/search-patient-icon.png" alt="search patient icon" width="60"
+                height="60" />
+        </td>
+    </tr>
+</table>
+<div id="searchTabstrip">
+    <ul>
+        <li class="k-state-active">Search </li>
+        <li>Search By Date of Birth </li>
+    </ul>
+    <div>
+        <!-- Search -->
+        <table width="100%">
+            <tr>
+                <td><b>Employer's Name (Starts with):&nbsp;</b></td>
+                <td><b>Search By:&nbsp;</b></td>
+                <td><b>Search For:&nbsp;</b></td>
+                <td><b>Select Gender:&nbsp;</b></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                 <td>
+                    <input type="text" id="txtCompany" size="40" maxlength="50" />
+                </td>
+                <td>
+                    <select id="ddlSearchColumn">
+                        <option value="Name" selected="selected">Patient's Name (Starts with)</option>
+                        <option value="Id">Medical Record No. (Exact match)</option>
+                        <option value="FatherName">Father's Name (Contains)</option>
+                        <option value="Township">Township (Start with)</option>
+                        <option value="Address">Address (Start with)</option>
+                        <option value="HomePhone">Home Phone (Start with)</option>
+                        <option value="MobilePhone">Mobile Phone (Start with)</option>
+                        <option value="NrcNo">NRC Number (Exact match)</option>
+                        <option value="City">City (Exact match)</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id="txtSearchString" size="40" maxlength="60" />
+                </td>
+                <td>
+                    <select id="ddlGender">
+                        <option value="" selected="selected">All</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="N">N/A</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <!-- Search By Date of Birth -->
+        <table width="100%">
+            <tr>
+                <td align="right">
+                    <b>Date of Birth:&nbsp;</b>
+                </td>
+                <td>
+                    <select id="ddlDobDay">
+                        <option value="0">Select Date</option>
+                    </select>
+                    <select id="ddlDobMonth">
+                        <option value="0">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">Febuary</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">Auguest</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="ddlDobYear">
+                        <option value="0">Select Year</option>
+                    </select>
+                    <span id="validateBODday" style="color: Red; font-weight: bold;"></span><span id="validateBODmonth"
+                        style="color: Red; font-weight: bold;"></span><span id="validateBODyear" style="color: Red;
+                            font-weight: bold;"></span>
+                </td>
+               @* <td align="left">
+                    <input type="text" id="txtDOB" />&nbsp;example: 02 Jun 1980 (dd MMM yyyy)
+                </td>*@
+                <td align="left">
+                    <input type="button" id="btnDOBsearch" value="Search By Date of Birth" class="k-button" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="searchInputError" style="color: Red; font-weight: bold; text-align: left;">
+</div>
+<div id="resultCount" style="color: Green; font-weight: bold; text-align: left;">
+</div>
+<div id="searchResult" class="CSSTableGenerator">
+</div>
+<div id="noRecordFound" style="color: Red; font-weight: bold; text-align: center;">
+</div>
+<p>
+    &nbsp;</p>
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        $("#searchTabstrip").kendoTabStrip();
+        $("#txtDOB").kendoDatePicker({
+            // display month and year in the input
+            format: "dd MMM yyyy"
+        });
+
+        populateDaysDropdownList("ddlDobDay");
+        populateYearsDropdownList("ddlDobYear");
+
+        $("#btnDOBsearch").click(function () {
+            if ($("#ddlDobDay").val() == "0") { $("#validateBODday").html("Select Day!"); return false; }
+            else { $("#validateBODday").html(""); }
+            if ($("#ddlDobMonth").val() == "0") { $("#validateBODmonth").html("Select Month!"); return false; }
+            else { $("#validateBODmonth").html(""); }
+            if ($("#ddlDobYear").val() == "0") { $("#validateBODyear").html("Select Year!"); return false; }
+            else { $("#validateBODyear").html(""); }
+
+            $("#searchInputError").html("");
+            $("#resultCount").html("");
+            var inputDOB = $("#ddlDobMonth").val() + "/" + $("#ddlDobDay").val() + "/" + $("#ddlDobYear").val();
+            $.ajax({
+                url: '/service/SearchPatientDOB',
+                type: 'POST',
+                data: "{ 'strDOB': '" + inputDOB + "' }",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError calling SearchPatientDOB() = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    //console.log(result);
+                    if (result.length > 0) {
+                        $("#resultCount").html("Found (" + result.length + ") Patient(s).");
+                        $("#noRecordFound").html("");
+                        var tableHtml = renderSearchResult(result);
+                        $("#searchResult").html(tableHtml);
+                    }
+                    else {
+                        $("#searchResult").html("");
+                        $("#resultCount").html("");
+                        $("#noRecordFound").html("No Record found for this search. Please Search By different fields...");
+                    }
+                }
+            });
+        });
+
+        $('#txtCompany').on("keypress", function (e) {
+            if (e.keyCode == 13) {
+                doSearch();
+                return false; // prevent the button click from happening
+            }
+        });
+
+        $('#txtSearchString').on("keypress", function (e) {
+            if (e.keyCode == 13) {
+                doSearch();
+                return false; // prevent the button click from happening
+            }
+        });
+
+        $("#ddlGender").change(function () {
+            doSearch();
+        });
+
+        function doSearch() {
+            var selectedColumn = $("#ddlSearchColumn").val();
+            var selectedGender = $("#ddlGender").val();
+            var searchString = $("#txtSearchString").val();
+            var companyName = $("#txtCompany").val();
+
+            if ((searchString == null || searchString == "" || searchString == undefined) &&
+                (companyName == null || companyName == "" || companyName == undefined)) {
+                $("#searchInputError").html("Please enter Search Value. This can not be blank or empty!");
+                $("#txtSearchString").focus();
+                $("#searchResult").html("");
+                $("#resultCount").html("");
+                return false;
+            }
+            else {
+                $("#searchInputError").html("");
+                $("#resultCount").html("");
+            }
+            var searchObj = new Object();
+            searchObj.SearchColumnName = selectedColumn;
+            searchObj.SearchString = searchString;
+            searchObj.Gender = selectedGender;
+            searchObj.CompanyName = companyName;
+
+            $.ajax({
+                url: '/service/SearchPatient',
+                type: 'POST',
+                data: JSON.stringify(searchObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError calling SearchPatient() = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    //console.log(result);
+                    if (result.length > 0) {
+                        $("#resultCount").html("Found (" + result.length + ") Patient(s).");
+                        $("#noRecordFound").html("");
+                        var tableHtml = renderSearchResult(result);
+                        $("#searchResult").html(tableHtml);
+                    }
+                    else {
+                        $("#searchResult").html("");
+                        $("#resultCount").html("");
+                        $("#noRecordFound").html("No Record found for this search. Please Search By different fields...");
+                    }
+                }
+            });
+        }
+
+    });
+
+    function decodeGender(genderCode) {
+        var gender = "";
+        if (genderCode == "M") {
+            gender = "<img src='/Images/maleIcon.jpg' alt='Male Icon' />";
+        }
+        else if (genderCode == "F") {
+            gender = "<img src='/Images/femaleIcon.jpg' alt='Female Icon' />"; ;
+        }
+        else {
+            gender = genderCode;
+        }
+
+        return gender;
+    }
+
+    function renderSearchResult(result) {
+        var resultHtml = "";
+        resultHtml += "<table cellpadding='0' cellspacing='0' border='0'>";
+        resultHtml += "<tr><td>Id</td><td>Name</td><td>Gender</td><td>Father's Name</td><td>Company</td><td>Date of Birth</td>";
+        resultHtml += "<td>NRC No.</td><td>HomePhone</td><td>MobilePhone</td><td>Address</td><td>Township</td>";
+        resultHtml += "<td>&nbsp;</td><td>&nbsp;</td>";
+        resultHtml += "</tr>";
+        for (var i = 0; i < result.length; i++) {
+            console.log(result[i].DateOfBirth);
+            resultHtml += "<tr>";
+            resultHtml += "<td>" + result[i].Id + "</td>";
+            resultHtml += "<td><a href='/Patient/PatientDetails/" + result[i].Id + "'>" + getEmptyStringIfEmptyOrBlank(result[i].Prefix) + " " + result[i].Name + "</a></td>";
+            resultHtml += "<td style='text-align:center;'>" + decodeGender(result[i].Gender) + "</td>";
+            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].FatherPrefix) + " " + result[i].FatherName + "</td>";
+            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].Company) + "</td>";
+            resultHtml += "<td>" + parseJsonDate(result[i].DateOfBirth) + "</td>";
+            resultHtml += "<td>" + result[i].NrcNo + "</td>";
+            resultHtml += "<td>" + result[i].HomePhone + "</td>";
+            resultHtml += "<td>" + result[i].MobilePhone + "</td>";
+            resultHtml += "<td>" + result[i].Address + "</td>";
+            resultHtml += "<td>" + result[i].Township + "</td>";
+            //resultHtml += "<td>" + result[i].City + "</td>";
+            resultHtml += "<td><a href='/Patient/MedHistory/" + result[i].Id + "'><img src='../../Images/medHistory24x24.png' title='Medical History'/></a></td>";
+            resultHtml += "<td><a href='/Patient/MakeAppointmentForPatientId/" + result[i].Id + "'><img src='../../Images/appointment24x24.png' title='Make Appointment' /></a></td>";
+            resultHtml += "</tr>";
+        }
+        resultHtml += "</table>";
+        return resultHtml;
+    }
+
+</script>

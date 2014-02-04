@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "ManageUserRoles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Manage User Roles") 
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/users.png" alt="users icon" />
+        </td>
+    </tr>
+</table>
+
+<input type="hidden" id="hiddenCurrentUserId" value="@ViewBag.currentUserId" />
+<div class="k-block" id="userDetails" style=" margin:10px; padding:5px; text-align:center;">
+    <div class="k-header" id="userDetailsHeader"></div>
+    <div id="userDetailsContent"></div>
+</div>
+<div class="pageHeading">@Html.Label("Select the role(s) for the user:")</div>
+
+<div style=" margin:10px; padding:5px; text-align:left;">
+    <div style=" font-size:large; color:Red; font-weight:bold;">NOTE! Please select only 1 Role.</div>
+
+    <div id="availableRolesListView"></div>
+    <p style=" text-align:right;"><button id="btnSaveRoles" class="k-button">Save Role(s)</button></p>
+</div>
+
+<div id="lblRolesSave" style="font-size:large; color:Green; font-weight:bold; display:none;">User Role(s) saved successfully!</div>
+
+<script type="text/x-kendo-template" id="availableRolesTemplate">
+    <input type="checkbox" name="roleCheckboxList" id="#= RoleId #" # if(AssignedRole>0){#: checked #}#><b> #= RoleName # </b></input> 
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#lblRolesSave").hide();
+        $("#btnSaveRoles").click(function () {
+            var selectedRoles = new Array();
+            $("input:checkbox[name=roleCheckboxList]:checked").each(function () {
+                var val = $(this).attr("id");
+                selectedRoles.push(val);
+            });
+
+            var userRolesObj = new Object();
+            userRolesObj.UserId = $("#hiddenCurrentUserId").val();
+            userRolesObj.RoleIdArray = selectedRoles;
+
+
+            $.ajax({
+                url: "../../api/RoleApi/",
+                type: 'POST',
+                data: JSON.stringify(userRolesObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        if (selectedRoles[0] == 2) {
+                            // Redirect to AddPhysicianTitle
+                            document.location.href = '/Admin/AddPhysicianTitle/' + userRolesObj.UserId;
+                        }
+                        else {
+                            $("#lblRolesSave").show();
+                        }
+                    }
+                }
+            });
+
+        });
+
+
+        $.ajax({
+            url: "../../api/UserApi/" + $("#hiddenCurrentUserId").val(),
+            type: 'GET',
+            //data: JSON.stringify(tsMessageObj),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+            },
+            success: function (result) {
+                $("#userDetailsHeader").html("");
+                $("#userDetailsContent").html("");
+                $("#userDetailsHeader").append("<b>" + result.Username + " (" + result.FullName + ") - Id: " + result.Id + "</b>");
+                $("#userDetailsContent").append("<table width='800' cellpadding='10' cellspacing='10'>");
+                $("#userDetailsContent").append("<tr>");
+                $("#userDetailsContent").append("<td width='200' align='left'>Email: </td>");
+                $("#userDetailsContent").append("<td width='200' align='left'>" + result.Email + "</td>");
+                $("#userDetailsContent").append("<td width='200' align='left'>Pasword: </td>");
+                $("#userDetailsContent").append("<td width='200' align='left'>" + result.Password + "</td>");
+                $("#userDetailsContent").append("</tr>");
+
+                $("#userDetailsContent").append("<tr>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>Password Question: </td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>" + result.PasswordQuestion + "</td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>Password Answer: </td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>" + result.PasswordAnswer + "</td>");
+                $("#userDetailsContent").append("</tr>");
+
+                $("#userDetailsContent").append("<tr>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>Created DateTime: </td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>" + result.CreatedDateTime + "</td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>Last Login: </td>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>" + result.LastLogin + "</td>");
+                $("#userDetailsContent").append("</tr>");
+
+                $("#userDetailsContent").append("<tr>");
+                $("#userDetailsContent").append("<td width='25%' align='left'>Comment: </td>");
+                $("#userDetailsContent").append("<td width='75%' align='left' colspan='3'>" + result.Comment + "</td>");
+                $("#userDetailsContent").append("</table>");
+            },
+            async: true
+        });
+
+        availableRolesDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../../api/RoleApi/" + $("#hiddenCurrentUserId").val(),
+                    dataType: "json"
+                }
+            }
+        });
+
+        $("#availableRolesListView").kendoListView({
+            dataSource: availableRolesDataSource,
+            template: kendo.template($("#availableRolesTemplate").html())
+        });
+    });               //$(document).ready
+</script>

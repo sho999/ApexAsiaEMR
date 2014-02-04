@@ -1,0 +1,144 @@
+﻿<table cellpadding="3" cellspacing="0" width="100%" border="0" style="background: #eee;">
+    <tr>
+        <td align="right">
+            <b>Patient Id: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.Id
+        </td>
+        <td align="right">
+            <b>Patient Name: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.Name
+        </td>
+        <td align="right">
+            <b>Father's Name: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.FatherName
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Date Of Birth: </b>
+        </td>
+        <td align="left">@String.Format("{0:MMM dd yyyy}", ViewBag.currentPatient.DateOfBirth)
+        </td>
+        <td align="right">
+            <b>NRC Number: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.NrcNo
+        </td>
+        <td align="right">
+            <b>Passport No.: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.PassportNo
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Gender: </b>
+        </td>
+        <td align="left">
+            @{if (ViewBag.currentPatient.Gender == "M")
+              {<img src="../../Images/maleIcon.jpg" alt="male icon" />}
+              else if (ViewBag.currentPatient.Gender == "F")
+              {<img src="../../Images/femaleIcon.jpg" alt="female icon" />}
+              else
+              {@ViewBag.currentPatient.Gender}                                                                                                      
+            }
+        </td>
+        <td align="right">
+            <b>Home Phone: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.HomePhone
+        </td>
+        <td align="right">
+            <b>Mobile Phone: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.MobilePhone
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Address: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.Address
+        </td>
+        <td align="right">
+            <b>Township: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.Township
+        </td>
+        <td align="right">
+            <b>City: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.City
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Marital Status: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.MarritalStatus
+        </td>
+        <td align="right">
+            <b>Kin Name: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.KinName
+        </td>
+        <td align="right">
+            <b>Kin Relationship: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.KinRelationship
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Kin Address: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.KinAddress
+        </td>
+        <td align="right">
+            <b>Kin Home Phone: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.KinHomePhone
+        </td>
+        <td align="right">
+            <b>Kin Mobile Phone: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.KinMobilePhone
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <b>Company Name: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.Company
+        </td>
+        <td align="right">
+            <b>Entered By: </b>
+        </td>
+        <td align="left">@ViewBag.currentPatient.EnteredBy
+        </td>
+        <td align="right">
+            <b>Entered DateTime: </b>
+        </td>
+        <td align="left">@String.Format("{0:MMM dd yyyy hh:mm:ss tt}", ViewBag.currentPatient.EnteredDateTime)
+        </td>
+    </tr>
+</table>
+<br />
+<div class="k-block" style="width:100%; text-align:center;">
+    <div class="k-header k-inset">
+        <b>Employment Information</b>
+    </div>
+    <div>
+        <div>
+            <b>Employer Name:&nbsp;</b>@ViewBag.currentPatient.Company</div>
+        <div>
+            <b>Position / Title:&nbsp;</b>@ViewBag.currentPatient.PositionTitle</div>
+        <div>
+            <b>Employer Address:&nbsp;</b>@ViewBag.currentPatient.EmployerAddress</div>
+        <div>
+            <b>Employer Phone Number:&nbsp;</b>@ViewBag.currentPatient.EmployerPhoneNumber</div>
+    </div>
+</div>

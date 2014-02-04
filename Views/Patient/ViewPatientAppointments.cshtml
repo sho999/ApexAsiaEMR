@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "ViewPatientAppointments";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("View Patient Appointments")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/physician-schedule-icon.png" alt="users icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+
+@Html.Partial("_appointmentTablePartial")
+<p>&nbsp;</p>

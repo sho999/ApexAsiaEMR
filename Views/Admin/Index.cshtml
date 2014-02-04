@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome to Admin Page</h2>
+<ol>
+    <li>Username: @User.Identity.Name</li>
+    
+</ol>
+
+<table>
+    <tr>
+        <td><a href="~/Admin/AddNewUser"><img src="../../Images/users.png" alt="Users Icon" /></a>Manage Users</td>
+        <td><a href="~/Admin/AddNewUser"><img src="../../Images/ekg.jpg" alt="EKG Icon" /></a>Manage Labs</td>
+        <td><a href="~/Admin/AddNewUser"><img src="../../Images/stethoscope.jpg" alt="Sthethoscope Icon" /></a>Manage Physicians</td>
+    </tr>
+</table>

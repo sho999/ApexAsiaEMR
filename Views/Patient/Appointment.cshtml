@@ -1,0 +1,296 @@
+﻿@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Events.Calendar;
+@using DayPilot.Web.Mvc.Enums.Calendar;
+
+@{
+    ViewBag.Title = "Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<style>
+.k-scheduler-times {
+  display: none;
+}
+</style>*@
+
+<style>
+    #toolbar 
+    {
+    	margin-bottom: 10px;
+    }
+    
+    #toolbar a 
+    {
+    	display: inline-block;
+    	height: 20px;
+    	text-decoration: none;
+    	padding: 5px;
+    	color: #666;
+    	border: 1px solid #aaa;
+
+	    background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#e2e2e2));
+	    background: -webkit-linear-gradient(top, #fafafa 0%, #e2e2e2);
+	    background: -moz-linear-gradient(top, #fafafa 0%, #e2e2e2);
+	    background: -ms-linear-gradient(top, #fafafa 0%, #e2e2e2);
+	    background: -o-linear-gradient(top, #fafafa 0%, #e2e2e2);
+	    background: linear-gradient(top, #fafafa 0%, #e2e2e2);
+	    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#fafafa", endColorStr="#e2e2e2");    	
+    }
+
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Appointment")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/appointment-icon.png" alt="appointment icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<input type="hidden" id="hdnPatientId" value=@ViewBag.currentPatientId />
+<input type="hidden" id="hdnPhysicianId" value=@ViewBag.selectedPhysicianId />
+<b>patient Id = </b>@ViewBag.currentPatientId
+<b>physician Id = </b>@ViewBag.selectedPhysicianId
+
+
+@Html.Label("Select A Physician: ")
+<input id="ddlPhysicians" value="0" style="width:400px; margin: 10px 10px 10px 0px;"/>
+<table width="100%">
+    <tr>
+        <td>
+            <div id="physicianDetails" class="k-block k-success-colored" style="width:600px; margin:5px; text-align: center;"></div>
+        </td>
+        <td>
+            <div id="physicianSchedules" class="k-block k-success-colored" style="width:300px; margin:5px;text-align: center;"></div>
+        </td>
+    </tr>
+</table>
+
+<div style="float:left; width: 150px">
+@Html.DayPilotNavigator("dp_navigator", new DayPilotNavigatorConfig
+{
+    CssOnly = true,
+    CssClassPrefix = "navigator_white",
+    ShowMonths = 3,
+    SkipMonths = 3
+})
+</div>
+<div id="tabs" style="margin-left:150px">
+    <div id="toolbar">
+    <a href="#" id="toolbar_day">Day</a>
+    <a href="#" id="toolbar_week">Week</a>
+    </div>
+</div>
+
+ @Html.DayPilotCalendar("dp_day", new DayPilotCalendarConfig
+    {
+        BackendUrl = Url.Content("~/Calendar/Day"),
+        EventResizeHandling = EventResizeHandlingType.CallBack,
+        EventMoveHandling = EventMoveHandlingType.CallBack,
+	    CssOnly = true,
+        DayBeginsHour = 8,
+        DayEndsHour = 18,
+        CellDuration = 15,
+        TimeHeaderCellDuration = 30,
+        HourFontSize = "5pt",
+        HourWidth = 100,
+        HeaderFontSize = "14pt",
+        
+        CssClassPrefix = "calendar_white",
+        ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day,
+
+        EventClickHandling = EventClickHandlingType.JavaScript,
+        EventClickJavaScript = "edit(e.id())",
+        TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+        TimeRangeSelectedJavaScript = "create(start, end)"
+    })
+
+ @Html.DayPilotCalendar("dp_week", new DayPilotCalendarConfig
+    {
+        BackendUrl = Url.Content("~/Calendar/Week"),
+        EventResizeHandling = EventResizeHandlingType.CallBack,
+        EventMoveHandling = EventMoveHandlingType.CallBack,
+	    CssOnly = true,
+        DayBeginsHour = 8,
+        DayEndsHour = 18,
+        CellDuration = 15,
+        TimeHeaderCellDuration = 30,
+        HourFontSize = "5pt",
+        HourWidth = 100,
+        HeaderFontSize = "14pt",
+        
+        CssClassPrefix = "calendar_white",
+        ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+
+        EventClickHandling = EventClickHandlingType.JavaScript,
+        EventClickJavaScript = "edit(e.id())",
+        TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+        TimeRangeSelectedJavaScript = "create(start, end)"
+    })
+
+
+
+
+
+<script type="text/javascript">
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    function edit(id) {
+        var modal = new DayPilot.Modal();
+        modal.closed = function () {
+            if (this.result == "OK") {
+                switcher.active.control.commandCallBack('refresh');
+            }
+        };
+        modal.showUrl("/Calendar/Edit/" + id);
+    }
+
+    function create(start, end) {
+        var modal = new DayPilot.Modal();
+        modal.closed = function () {
+            if (this.result == "OK") {
+                switcher.active.control.commandCallBack('refresh');
+            }
+            switcher.active.control.clearSelection();
+        };
+        modal.showUrl("/Calendar/Create?start=" + start + "&end=" + end + "&patientId=" + $("#hdnPatientId").val() + "&physicianId=" + $("#hdnPhysicianId").val());
+    }
+
+    var switcher = new DayPilot.Switcher();
+    switcher.addView(dp_day);
+    switcher.addView(dp_week);
+    //switcher.addView(dp_month);
+
+    switcher.addButton("toolbar_day", dp_day);
+    switcher.addButton("toolbar_week", dp_week);
+    //switcher.addButton("toolbar_month", dp_month);
+
+    switcher.addNavigator(dp_navigator);
+
+    switcher.show(dp_week);
+
+    $(document).ready(function () {
+        $("#physicianDetails").hide();
+        $("#physicianSchedules").hide();
+        var physicianDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../../api/PhysicianApi",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model:
+                    { id: "Id"} // ******IT IS VERY IMPORTANT TO SET THE ID. OTHERWISE DELET WON'T WORK!!!   
+            }
+        });
+
+        // create DropDownList from input HTML element
+        $("#ddlPhysicians").kendoDropDownList({
+            dataTextField: "Name",
+            dataValueField: "Id",
+            dataSource: physicianDataSource,
+            optionLabel: {
+                Name: "Select A Physician",
+                Id: "0"
+            },
+            change: onChange
+        });
+
+
+        function onChange() {
+            var selectedPhysicianId = $("#ddlPhysicians").val();
+
+            if (selectedPhysicianId == "0" || selectedPhysicianId === "" || selectedPhysicianId === null ||
+                selectedPhysicianId === undefined) {
+                $("#physicianDetails").html("");
+                $("#physicianDetails").hide();
+                $("#physicianSchedules").hide();
+            }
+            else {
+                // set the selected id to the hidden field to pass over to popup Create.cshtml view.
+                $("#hdnPhysicianId").val(selectedPhysicianId);
+                showPhysicianTitle(selectedPhysicianId);
+            } // if
+        }
+
+        function showPhysicianTitle(selectedPhysicianId) {
+            $.ajax({
+                url: "../../api/PhysicianApi/" + selectedPhysicianId,
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        $("#physicianDetails").html("");
+                        $("#physicianDetails").append("<b>" + result.Prefix + " " + result.Name + "[" + result.Degree + "]</b>");
+                        $("#physicianDetails").append("<br />");
+                        if (result.Title1 !== null) {
+                            $("#physicianDetails").append(result.Title1 + "<br />");
+                        }
+                        if (result.Title2 !== null) {
+                            $("#physicianDetails").append(result.Title2 + "<br />");
+                        }
+                        if (result.Title3 !== null) {
+                            $("#physicianDetails").append(result.Title3 + "<br />");
+                        }
+                        $("#physicianDetails").show();
+                        //console.log(result);
+                        // NOW WE NEED TO POPULATE THE EXISTING SCHEDULE IF THERE IS ANY
+                        showPhysicianHours(selectedPhysicianId);
+                    }
+                }
+            });
+        }
+
+
+        function showPhysicianHours(selectedPhysicianId) {
+            var physicianIdObj = new Object();
+            physicianIdObj.physicianId = selectedPhysicianId;
+            $("#physicianSchedules").html("");
+            $.ajax({
+                url: "/service/GetPhysicianSchedulesById",
+                type: 'POST',
+                data: JSON.stringify(physicianIdObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling service/GetPhysicianSchedulesById =>" + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    var stringSchedule = "";
+                    if (result.length > 0) {
+                        for (var p = 0; p < result.length; p++) {
+                            var stringSchedule = stringSchedule + weekday[result[p].DayOfWeekId] +
+                                                                " => " + result[p].StartDateTime +
+                                                                " To " + result[p].EndDateTime + "<br />";
+
+                        }
+                        $("#physicianSchedules").html(stringSchedule);
+                        $("#physicianSchedules").show();
+                    }
+                    console.log(result);
+                }
+            });
+        }
+
+        if ($("#hdnPhysicianId").val() != '' && $("#hdnPhysicianId").val() != null) {
+            $("#ddlPhysicians").data("kendoDropDownList").value($("#hdnPhysicianId").val());
+            showPhysicianTitle($("#hdnPhysicianId").val());
+        }
+
+    });              // ready
+    
+</script>
+

@@ -1,0 +1,27 @@
+﻿<style>
+    .tableHeader{ font-family:Verdana, Arial, Sans-Serif; font-weight:bold; text-align:center;}
+    .tableCell{ font-family:Verdana, Arial, Sans-Serif; font-weight:normal; text-align:center;}
+</style>
+<div class="CSSTableGenerator">
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>Doctor's Name</td><td>Patient's Name</td><td>Title</td><td>Date</td><td>Start Time</td><td>End Time</td>
+        <td>Day</td><td>Reason For Appointment</td><td>Home Visit</td><td>Has Seen</td>
+        <td>Entered By</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    @foreach(var a in Model){
+        <tr>
+            <td>@a.DoctorName</td><td>@a.PatientName</td><td>@a.Title</td>
+            <td>@a.StartDateTime.ToString("dd MMM yyyy")</td>
+            <td>@a.StartDateTime.ToString("hh:mm tt")</td>
+            <td>@a.EndDateTime.ToString("hh:mm tt")</td>
+            <td>@a.Day</td><td>@a.ReasonForAppointment</td>
+            <td align="center"><input type="checkbox" checked=@a.IsHomeVisit disabled="disabled" /></td>
+            <td align="center"><input type="checkbox" checked=@a.HasSeen disabled="disabled"/></td>
+            <td>@a.EnteredBy</td>
+            <td><a href="/Patient/MedHistory/@a.PatientId"><img src='../../Images/medHistory24x24.png' alt="medHistory24x24" title="Medical History" /></a></td>
+            <td><a href="/Report/SeeAppointment/@a.AppointmentId"><img src='../../Images/physicianAppointment24x24.png' alt="physicianAppointment24x24" title="See this Appointment" /></a></td>
+        </tr>
+    }
+</table>
+</div>

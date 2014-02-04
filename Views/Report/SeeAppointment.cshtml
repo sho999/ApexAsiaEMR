@@ -1,0 +1,153 @@
+﻿@model ApexAsiaDAL.Appointment
+@{
+    ViewBag.Title = "SeeAppointment";
+}
+<style>
+    .textAreaStyle {width: 800px; height: 50px; font-family:Zawgyi-One;}
+    .textBoxStyle {width: 800px; height: 15px; font-family:Zawgyi-One;}
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("See Appointment")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/physician-schedule-icon.png" alt="physician-schedule-icon"
+                width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<div id="panelBarContainer" style="margin: 10px;">
+    <ul id="panelbar">
+        <li>Patient Details
+            <div>
+                @Html.Partial("_patientDetailsPartial")
+            </div>
+        </li>
+        <li class="k-state-active"><span class="k-link k-state-selected">See This Patient's
+            Appointment</span>
+            <div>
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+
+                    <fieldset>
+                        <legend>Appointment</legend>
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.DayOfTheWeek)
+                        @Html.HiddenFor(model => model.PatientId)
+                        @Html.HiddenFor(model => model.PhysicianId)
+
+                        <table width="100%">
+                            <tr>
+                                <td align="right">
+                                    <b>Start DateTime : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.StartDateTime, new { @readonly = "readonly" })
+                                </td>
+                                <td align="right">
+                                    <b>End DateTime : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.EndDateTime, new { @readonly = "readonly" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Appointment Title : </b>
+                                </td>
+                                <td align="left" colspan="3">@Html.TextBoxFor(model => model.Title, new { @readonly = "readonly", @class = "textBoxStyle" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Reason For This Appointment : </b>
+                                </td>
+                                <td align="left" colspan="3">@Html.TextBoxFor(model => model.ReasonForAppointment, new { @readonly = "readonly", @class = "textBoxStyle" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Doctor's Comment : </b>
+                                </td>
+                                <td align="left" colspan="3">@Html.TextAreaFor(model => model.DoctorComment, new { @class = "textAreaStyle" })
+                                </td>
+                            </tr>
+                             <tr>
+                                <td align="right">
+                                    <b>Additional Note : </b>
+                                </td>
+                                <td align="left" colspan="3">@Html.TextAreaFor(model => model.AdditionalNote, new { @class = "textAreaStyle" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Is Home Visit? : </b>
+                                </td>
+                                <td align="left">@Html.EditorFor(model => model.IsHomeVisit)
+                                </td>
+                                <td align="right">
+                                    <b>Has Seen : </b>
+                                </td>
+                                <td align="left">@Html.EditorFor(model => model.HasSeen)
+                                    <b style=" color:Red;">(Please check this box to complete this Appointment.)</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Entered DateTime : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.EnteredDateTime, new  { @readonly = "readonly"})
+                                </td>
+                                <td align="right">
+                                    <b>Entered By : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.EnteredBy, new { @readonly = "readonly" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <b>Updated DateTime : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.UpdatedDateTime, new { @readonly = "readonly" })
+                                </td>
+                                <td align="right">
+                                    <b>Updated By : </b>
+                                </td>
+                                <td align="left">@Html.TextBoxFor(model => model.UpdatedBy, new { @readonly = "readonly" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">&nbsp;</td>
+                                <td align="left" colspan="3"> <input type="submit" value="Save" /></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                }
+            </div>
+        </li>
+    </ul>
+</div>
+<div>
+    @Html.ActionLink("Back to My Appointment List", "PhysicianAppointments")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+        $("#panelbar").kendoPanelBar({
+            expandMode: "single"
+        });
+
+        //        $("#tabstrip").kendoTabStrip({
+        //            animation: {
+        //                open: {
+        //                    effects: "fadeIn"
+        //                }
+        //            }
+        //        });
+    });
+</script>

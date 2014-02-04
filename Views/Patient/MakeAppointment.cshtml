@@ -1,0 +1,481 @@
+﻿@{
+    ViewBag.Title = "MakeAppointment";
+}
+<style>
+    .labelStyle
+    {
+        font-weight: bold;
+        font-size: 10pt;
+    }
+    .textboxStyle
+    {
+        width: 300px;
+    }
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Make Appointment")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/appointment-icon.png" alt="appointment icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<input type="hidden" id="hdnPatientId" value=@ViewBag.currentPatientId />
+<input type="hidden" id="hdnPhysicianId" value=@ViewBag.selectedPhysicianId />
+<b>Select A Physician: </b>
+<input id="ddlPhysicians" value="0" style="width: 400px; margin: 10px 10px 10px 0px;" />
+<table width="100%">
+    <tr>
+        <td>
+            <div id="physicianDetails" class="k-block k-success-colored" style="width: 600px;
+                margin: 5px; text-align: center;">
+            </div>
+        </td>
+        <td>
+            <div id="physicianSchedules" class="k-block k-error-colored" style="width: 300px;
+                margin: 5px; text-align: center;">
+            </div>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td valign="top">
+            <div id="calendar" style="width: 243px;">
+            </div>
+        </td>
+        <td valign="top">
+            <div id="appointmentTable" class="CSSTableGenerator">
+            </div>
+        </td>
+    </tr>
+</table>
+<p>
+    &nbsp;</p>
+<div id="dialogAddEdit" title="Add/Edit Appointment">
+    <form action="">
+    <fieldset>
+        <table>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Doctor / Patient:&nbsp;
+                </td>
+                <td align="left">@ViewBag.currentPhysicianName / @ViewBag.currentPatientName
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Title:&nbsp;
+                </td>
+                <td align="left">
+                    <input type="text" name="txtTitle" id="txtTitle" size="50" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Appointment Date:&nbsp;
+                </td>
+                <td align="left">
+                    <input type="text" name="txtAppointmentDate" id="txtAppointmentDate" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Start Time:&nbsp;
+                </td>
+                <td align="left">
+                    <input type="text" name="txtStartDateTime" id="txtStartDateTime" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    End Time:&nbsp;
+                </td>
+                <td align="left">
+                    <input type="text" name="txtEndDateTime" id="txtEndDateTime" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Reason For Appointment:&nbsp;
+                </td>
+                <td align="left">
+                    <textarea name="txtReason" id="txtReason" rows="4" cols="50"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="labelStyle">
+                    Is Home Visit:&nbsp;
+                </td>
+                <td align="left">
+                    <input type="checkbox" name="cbIsHomeVisit" id="cbIsHomeVisit" />
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" id="hdnAppointmentId" />
+        <input type="hidden" id="hdnSelectedDate" />
+    </fieldset>
+    </form>
+</div>
+<div id="delete-confirm" title="Confirm: Delete this Appointment?">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        This Appointment will be permanently deleted. Are you sure?</p>
+</div>
+</div>
+<style scoped>
+    .reports
+    {
+        width: 265px;
+        height: 247px;
+        padding: 108px 0 0 20px;
+        background: url('../../content/web/calendar/reports.png') transparent no-repeat 0 0;
+        margin: 30px 105px 20px;
+    }
+    .configuration
+    {
+        height: 390px;
+        width: 200px;
+    }
+    .configuration .console
+    {
+        background-color: transparent;
+        border: 0;
+        height: 342px;
+        overflow: auto;
+    }
+</style>
+<script type="text/javascript">
+    var gDeleteAppointmentId = 0;
+    function openDeleteDialog(deleteAppointmentId) {
+        //alert(deleteAppointmentId);
+        gDeleteAppointmentId = deleteAppointmentId;
+        $("#delete-confirm").dialog("open");
+    }
+    function openAddEditDialog(startTime, endTime, selectedDate, appointmentId) {
+        //alert("appointmentId = " + appointmentId);
+        $("#hdnAppointmentId").val(appointmentId);
+        $("#txtAppointmentDate").val(selectedDate);
+        $("#txtStartDateTime").val(startTime);
+        $("#txtEndDateTime").val(endTime);
+
+        if (appointmentId > 0) {
+            // Populate the existing Appointment and display it!
+            $.ajax({
+                url: "/service/GetAppointmentById",
+                type: 'POST',
+                data: "{ 'appointmentId': '" + appointmentId + "' }",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling service/GetAppointmentById =>" + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        $("#txtTitle").val(result.Title);
+                        $("#txtReason").val(result.ReasonForAppointment);
+                        $("#cbIsHomeVisit").checked = true;
+                    }
+                }
+
+            });
+        }
+        else {
+            // Clean up input data for new entry
+            $("#txtTitle").val("");
+            $("#txtReason").val("");
+            $("#cbIsHomeVisit").checked = false;
+        }
+
+        $("#dialogAddEdit").dialog("open");
+    }
+
+
+
+    $(document).ready(function () {
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+
+        $("#delete-confirm").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 160,
+            modal: true,
+            buttons: {
+                "Delete": function () {
+                    deleteAppointment(gDeleteAppointmentId);
+                    $(this).dialog("close");
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#dialogAddEdit").dialog({
+            autoOpen: false,
+            height: 400,
+            width: 600,
+            modal: true,
+            buttons: {
+                "Save Appointment": function () {
+                    var appointmentObj = new Object();
+                    appointmentObj.Id = $("#hdnAppointmentId").val();
+                    appointmentObj.PatientId = $("#hdnPatientId").val();
+                    appointmentObj.PhysicianId = $("#hdnPhysicianId").val();
+                    appointmentObj.StartDateTime = $("#txtAppointmentDate").val() + " " + $("#txtStartDateTime").val();
+                    appointmentObj.EndDateTime = $("#txtAppointmentDate").val() + " " + $("#txtEndDateTime").val();
+                    appointmentObj.ReasonForAppointment = $("#txtReason").val();
+                    appointmentObj.Title = $("#txtTitle").val();
+                    appointmentObj.IsHomeVisit = $("#cbIsHomeVisit").is(':checked') ? true : false;
+                    saveAppointment(appointmentObj);
+
+
+
+                    $(this).dialog("close");
+
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            } // buttons
+
+        });
+
+        function saveAppointment(appointmentObj) {
+            $.ajax({
+                url: "/service/SaveAppointment",
+                type: 'POST',
+                data: JSON.stringify(appointmentObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling service/SaveAppointment =>" + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        showAppointmentTable($("#txtAppointmentDate").val(), $("#hdnPhysicianId").val());
+                    }
+                }
+            });
+        }
+
+        function deleteAppointment(appointmentId) {
+            $.ajax({
+                url: "/service/DeleteAppointmentById",
+                type: 'POST',
+                data: "{ 'appointmentId': '" + appointmentId + "' }",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling service/DeleteAppointmentById =>" + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        showAppointmentTable($("#hdnSelectedDate").val(), $("#hdnPhysicianId").val());
+                    }
+                }
+
+            });
+        }
+
+
+        $("#calendar").kendoCalendar({
+            minDate: new Date(),
+            change: function () {
+                var todayDate = kendo.toString(new Date(), 'd');
+                var selectedDate = kendo.toString(this.value(), 'd');
+                var dtSelectedDate = new Date(selectedDate);
+                var dtTdayDate = new Date(todayDate);
+                //alert("selected date = " + dtSelectedDate + "  today = " + dtTdayDate);
+                if (dtSelectedDate > dtTdayDate) {
+                    $("#hdnSelectedDate").val(selectedDate);
+                    showAppointmentTable(selectedDate, $("#hdnPhysicianId").val());
+                }
+                else {
+                    $("#appointmentTable").html("<b style='color:Red;'>YOU CAN NOT MAKE APPOINTMENTS EARILER THAN TODAY!!!</b>");
+                }
+            },
+            navigate: function () {
+                // Todo: handle navigate event here
+            }
+        });
+
+        $("#physicianDetails").hide();
+        $("#physicianSchedules").hide();
+        var physicianDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../../api/PhysicianApi",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model:
+                    { id: "Id"} // ******IT IS VERY IMPORTANT TO SET THE ID. OTHERWISE DELET WON'T WORK!!!   
+            }
+        });
+
+        // create DropDownList from input HTML element
+        $("#ddlPhysicians").kendoDropDownList({
+            dataTextField: "Name",
+            dataValueField: "Id",
+            dataSource: physicianDataSource,
+            optionLabel: {
+                Name: "Select A Physician",
+                Id: "0"
+            },
+            change: onChange
+        });
+
+
+
+        function onChange() {
+            var selectedPhysicianId = $("#ddlPhysicians").val();
+
+            if (selectedPhysicianId == "0" || selectedPhysicianId === "" || selectedPhysicianId === null ||
+                selectedPhysicianId === undefined) {
+                $("#physicianDetails").html("");
+                $("#physicianDetails").hide();
+                $("#physicianSchedules").hide();
+            }
+            else {
+                // set the selected id to the hidden field to pass over to popup Create.cshtml view.
+                $("#hdnPhysicianId").val(selectedPhysicianId);
+                showPhysicianTitle(selectedPhysicianId);
+            } // if
+        }
+
+
+
+        function showAppointmentTable(selectedDate, physicianId) {
+            //alert(selectedDate + " - " + physicianId);
+            var apptKeyObj = new Object();
+            apptKeyObj.AppointmentDate = selectedDate;
+            apptKeyObj.PhysicianTitleId = physicianId;
+
+            $.ajax({
+                url: "/service/GetAppointmentTable",
+                type: 'POST',
+                data: JSON.stringify(apptKeyObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    console.log(result);
+                    $("#appointmentTable").html("");
+                    var resultHtml = "";
+                    if (result.length > 0) {
+                        resultHtml += "<table cellpadding='0' cellspacing='0' border='0'>";
+                        resultHtml += "<tr>";
+                        resultHtml += "<td>Time</td><td>Doctor</td><td>Patient's Name</td><td>Appointment Title</td><td>Reason for Appointment</td><td>Home Visit</td><td>&nbsp;</td>";
+
+                        resultHtml += "</tr>";
+                        for (var i = 0; i < result.length; i++) {
+                            var parameterString = "\"" + result[i].TimeSlot + "\",\"" + result[i].EndTime + "\",\"" + selectedDate + "\"," + result[i].AppointmentId;
+                            var deleteApptId = result[i].AppointmentId;
+                            console.log(parameterString);
+                            resultHtml += "<tr>";
+                            resultHtml += "<td><a href='#' onclick='javascript:openAddEditDialog(" + parameterString + ");'>" + result[i].TimeSlot + "</a></td>";
+                            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].DoctorName) + "</td>";
+                            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].PatientName) + "</td>";
+                            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].AppointmentTitle) + "</td>";
+                            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].Reason) + "</td>";
+                            resultHtml += "<td>" + getEmptyStringIfEmptyOrBlank(result[i].IsHomeVisit) + "</td>";
+                            resultHtml += "<td><a class='k-button' onclick='javascript:openDeleteDialog(" + deleteApptId + ");'><span class='k-icon k-i-close'></span></a></td>";
+                            resultHtml += "</tr>";
+                        }
+                        resultHtml += "</table>";
+                        $("#appointmentTable").html(resultHtml);
+                    }
+                    else {
+                        $("#appointmentTable").html("<b style='color:Red;'>The doctor you have selected is NOT available on " + selectedDate + "<b>");
+                    }
+                }
+            });
+        }
+
+
+
+        function showPhysicianTitle(selectedPhysicianId) {
+            $.ajax({
+                url: "../../api/PhysicianApi/" + selectedPhysicianId,
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result) {
+                        $("#physicianDetails").html("");
+                        $("#physicianDetails").append("<b>" + result.Prefix + " " + result.Name + "[" + result.Degree + "]</b>");
+                        $("#physicianDetails").append("<br />");
+                        if (result.Title1 !== null) {
+                            $("#physicianDetails").append(result.Title1 + "<br />");
+                        }
+                        if (result.Title2 !== null) {
+                            $("#physicianDetails").append(result.Title2 + "<br />");
+                        }
+                        if (result.Title3 !== null) {
+                            $("#physicianDetails").append(result.Title3 + "<br />");
+                        }
+                        $("#physicianDetails").show();
+                        //console.log(result);
+                        // NOW WE NEED TO POPULATE THE EXISTING SCHEDULE IF THERE IS ANY
+                        showPhysicianHours(selectedPhysicianId);
+                    }
+                }
+            });
+        }
+
+
+        function showPhysicianHours(selectedPhysicianId) {
+            var physicianIdObj = new Object();
+            physicianIdObj.physicianId = selectedPhysicianId;
+            $("#physicianSchedules").html("");
+            $.ajax({
+                url: "/service/GetPhysicianSchedulesById",
+                type: 'POST',
+                data: JSON.stringify(physicianIdObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling service/GetPhysicianSchedulesById =>" + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    var stringSchedule = "";
+                    if (result.length > 0) {
+                        for (var p = 0; p < result.length; p++) {
+                            var stringSchedule = stringSchedule + weekday[result[p].DayOfWeekId] +
+                                                                " => " + result[p].StartDateTime +
+                                                                " To " + result[p].EndDateTime + "<br />";
+
+                        }
+                        $("#physicianSchedules").html(stringSchedule);
+                        $("#physicianSchedules").show();
+                    }
+                    console.log(result);
+                }
+            });
+        }
+
+        if ($("#hdnPhysicianId").val() != '' && $("#hdnPhysicianId").val() != null) {
+            $("#ddlPhysicians").data("kendoDropDownList").value($("#hdnPhysicianId").val());
+            showPhysicianTitle($("#hdnPhysicianId").val());
+        }
+
+    });   // ready
+    
+</script>

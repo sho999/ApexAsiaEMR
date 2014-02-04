@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" class="pageHeading">
+            @ViewBag.viewMode
+        </td>
+        <td>
+            @{
+                
+                if (ViewBag.viewMode != null)
+                {
+                    string viewMode = ViewBag.viewMode;
+                    switch(viewMode){
+                        case "Admin" :
+                            <img src="../../Images/Admin-icon.png" alt="admin icon" />
+                            break;
+                        case "FrontDesk":
+                            <img src="../../Images/frontDesk2.jpg" alt="frontdesk icon" />
+                            break;
+                        case "Nurse":
+                            <img src="../../Images/nurse-girl-icon.png" alt="nurse icon" />
+                            break;
+                        case "Physician":
+                            <img src="../../Images/doctor-icon.png" alt="doctor icon" />
+                            break;
+                        default:
+                            break;                        
+                    }
+                }
+                
+            }
+       
+        </td>
+    </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<script type="text/javascript">
+
+//    $(document).ready(function () {
+//        var today = Date.today().add(3).day();
+//        var thisMonday = today.monday();
+//        var thisSatday = today.saturday();
+//        var thisSunday = today.sunday();
+
+//        var stringResult = "Today is = " + today + "<br />" +
+//                            thisSatday + "<br />" +
+//                            thisSunday + "<br />" +
+//                            Date.getDayNumberFromName('sat') + "<br />" +
+//                            Date.today().last().sunday(); +"<br />"
+//        //$("#dateTest").html(stringResult);
+
+//    });
+
+</script>

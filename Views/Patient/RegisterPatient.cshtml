@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "RegisterPatient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .fieldName{ background-color:#eee; margin:5px; padding:5px; font-weight:bold;}
+    .dataEntryControl{ background-color:#FAFAFA; margin:5px; padding:5px; font-weight:bold;}
+    .fieldNameSeperator{ background-color:#eee; margin:5px; padding:5px; color:#cc0000;font-weight:bold; text-decoration:underline;}
+    .employmentInfo{ background-color:#ffffcc;}
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Register New Patient")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/Patients-icon.png" alt="users icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<input type="hidden" id="hiddenCurrentUserName" value="@ViewBag.currentLoginUsername" />
+<table>
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="fieldName">Name (<span style=" font-family:Zawgyi-One;">အမည္</span>):&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <select id = "ddlPrefix">
+                            <option value="">Select</option>
+                            <option value="U">U</option>
+                            <option value="Daw">Daw</option>
+                            <option value="Mg">Mg</option>
+                            <option value="Ko">Ko</option>
+                            <option value="Ma">Ma</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                            <option value="Syd">Syd</option>
+                            <option value="Rev">Rev</option>
+                        </select>
+                        <input type="text" id="txtName" size="50" />&nbsp;<span id="validateName" style="color:Red; font-weight:bold;"></span></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Father's Name (<span style=" font-family:Zawgyi-One;">အဘအမည္</span>):&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <select id = "ddlFatherPrefix">
+                            <option value="">Select</option>
+                            <option value="U">U</option>
+                            <option value="Daw">Daw</option>
+                            <option value="Mg">Mg</option>
+                            <option value="Ko">Ko</option>
+                            <option value="Ma">Ma</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                            <option value="Syd">Syd</option>
+                            <option value="Rev">Rev</option>
+                        </select>
+                        <input type="text" id="txtFatherName" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Date of Birth (<span style=" font-family:Zawgyi-One;">ေမြးသကၠရာဇ္</span>):&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <select id = "ddlDobDay"><option value="0">Select Date</option></select> 
+                        <select id = "ddlDobMonth">
+                            <option value="0">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">Febuary</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select> 
+                        <select id = "ddlDobYear"><option value="0">Select Year</option></select>
+                        <span id="validateBODday"  style="color:Red; font-weight:bold;"></span>
+                        <span id="validateBODmonth"  style="color:Red; font-weight:bold;"></span>
+                        <span id="validateBODyear"  style="color:Red; font-weight:bold;"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="fieldName">Gender :&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <input type="radio" name="genderList" value="M">Male( <span style='font-family:Zawgyi-One;'>က်ား</span> )</input>
+                        <input type="radio" name="genderList" value="F">Female( <span style='font-family:Zawgyi-One;'>မ</span> )</input>
+                        <input type="radio" name="genderList" value="N">N/A</input>
+                        <span id="validateGender"  style="color:Red; font-weight:bold;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Marital Status :&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <input type="radio" name="maritalStatusList" value="S">Single( <span style='font-family:Zawgyi-One;'>အပ်ိဳ/လူပ်ိဳ</span> )</input>
+                        <input type="radio" name="maritalStatusList" value="M">Married( <span style='font-family:Zawgyi-One;'>အိမ္ေထာင္ရွိ</span> )</input>
+                        <input type="radio" name="maritalStatusList" value="D">Divorced( <span style='font-family:Zawgyi-One;'>အိမ္ေထာင္ကြဲ</span> )</input>
+                        <input type="radio" name="maritalStatusList" value="W">Widow(er)( <span style='font-family:Zawgyi-One;'>မုဆုိးဖုိ/မ</span> )</input>
+                        <span id="validateMaritalStatus"  style="color:Red; font-weight:bold;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldName">NRC Number (<span style='font-family:Zawgyi-One;'>မွတ္ပံုတင္နံပါတ္</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtNRC" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Passport Number:&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtPassportNumber" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Home Phone (<span style='font-family:Zawgyi-One;'>အိမ္ဖုန္း</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtHomePhone" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Mobile Phone (<span style='font-family:Zawgyi-One;'>လက္ကုိင္ဖုန္း</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtMobilePhone" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Address (<span style='font-family:Zawgyi-One;'>ေနရပ္လိပ္စာ</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtAddress" size="50" /></td>
+                </tr>
+                 <tr>
+                    <td class="fieldName">Township (<span style='font-family:Zawgyi-One;'>ၿမိဳ႕နယ္</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtTownship" size="50" /></td>
+                </tr>
+                 <tr>
+                    <td class="fieldName">City (<span style='font-family:Zawgyi-One;'>ၿမိဳ႕</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtCity" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldNameSeperator"> NEXT OF KIN (<span style='font-family:Zawgyi-One;'>အနီးစပ္ဆံုးေဆြမ်ိဳး</span>)&nbsp;</td>
+                    <td class="dataEntryControl">&nbsp;</td>
+           
+        
+                </tr>
+                <tr>
+                    <td class="fieldName">Name (<span style='font-family:Zawgyi-One;'>အမည္</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtKinName" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Relationship (<span style='font-family:Zawgyi-One;'>ေတာ္စပ္ပံု</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtRelationship" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Address (<span style='font-family:Zawgyi-One;'>ေနရပ္လိပ္စာ</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtKinAddress" size="100" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">&nbsp;</td>
+                    <td class="dataEntryControl">
+                        <input type="checkbox" id="cbKinAddress" />
+                        Same as above Address&nbsp; (<span style='font-family:Zawgyi-One;'>အထက္ပါလိပ္စာအတုိင္း</span>)&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Home Phone (<span style='font-family:Zawgyi-One;'>အိမ္ဖုန္း</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtKinHomePhone" size="50" /></td>
+                </tr>
+                <tr>
+                    <td class="fieldName">Mobile Phone (<span style='font-family:Zawgyi-One;'>လက္ကုိင္ဖုန္း</span>):&nbsp;</td>
+                    <td class="dataEntryControl"><input type="text" id="txtKinMobilePhone" size="50" /></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><button id="btnRegisterPatient" class="k-button">Register Patient</button></td>
+                </tr>
+                 <tr>
+                    <td>&nbsp;</td>
+                    <td><span id="validateSummary"  style="color:Red; font-weight:bold;"></span></td>
+                </tr>
+
+            </table>
+        </td>
+        <td valign="top">
+            <div class="k-block">
+                <div class="k-header k-shadow"><b>Employment Information</b></div>
+                    <div><b>Name of Employer:</b></div>
+                    <div><input type="text" id="txtCompany" size="40" /></div>
+                    <div><b>Position / Title:</b></div>
+                    <div><input type="text" id="txtPositionTitle" size="40" /></div>
+                    <div><b>Employer's Address:</b></div>
+                    <div><input type="text" id="txtEmployerAddress" size="40" /></div>
+                    <div><b>Employer's Phone Number:</b></div>
+                    <div><input type="text" id="txtEmployerPhone" size="40" /></div>
+                    <p>&nbsp;</p>
+                </div>
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#txtName").focus();
+        populateDaysDropdownList("ddlDobDay");
+        populateYearsDropdownList("ddlDobYear");
+        // user input validation
+        $("#txtName").blur(function () {
+            if ($("#txtName").val() == "" || $("#txtName").val() == " ") {
+                $("#validateName").html("Required!");
+                $("#validateName").attr("");
+                $("#txtName").focus();
+                return false;
+            }
+        });
+
+
+        $('#cbKinAddress').click(function () {
+
+            if ($('#cbKinAddress:checked').val()) {
+                $("#txtKinAddress").val("Same as above Address");
+            }
+            else {
+                $("#txtKinAddress").val("");
+            }
+        });
+
+        $("#btnRegisterPatient").click(function () {
+            var validateSummary = "";
+            if ($("#ddlDobDay").val() == "0") { $("#validateBODday").html("Select Day!"); validateSummary = "Select Day! "; return false; }
+            else { $("#validateBODday").html(""); }
+            if ($("#ddlDobMonth").val() == "0") { $("#validateBODmonth").html("Select Month!"); validateSummary += "Select Month!"; return false; }
+            else { $("#validateBODmonth").html(""); }
+            if ($("#ddlDobYear").val() == "0") { $("#validateBODyear").html("Select Year!"); validateSummary += "Select Year!"; return false; }
+            else { $("#validateBODyear").html(""); }
+
+            if ($("input:radio[name='genderList']:checked").val() === undefined) { $("#validateGender").html("Select A Gender!"); validateSummary += "Select A Gender!"; return false; }
+            else { $("#validateGender").html(""); }
+
+            if ($("input:radio[name='maritalStatusList']:checked").val() === undefined) { $("#validateMaritalStatus").html("Select A Marital Status!"); validateSummary += "Select A Marital Status!"; return false; }
+            else { $("#validateMaritalStatus").html(""); }
+
+            $("#validateSummary").html(validateSummary);
+
+            var patientObj = new Object();
+
+            patientObj.Name = $("#txtName").val();
+            patientObj.Prefix = $("#ddlPrefix").val();
+            patientObj.FatherPrefix = $("#ddlFatherPrefix").val();
+            patientObj.Gender = $("input:radio[name='genderList']:checked").val();
+            patientObj.FatherName = $("#txtFatherName").val();
+            patientObj.DateOfBirth = $("#ddlDobMonth").val() + "/" + $("#ddlDobDay").val() + "/" + $("#ddlDobYear").val();
+            patientObj.NrcNo = $("#txtNRC").val();
+            patientObj.PassportNo = $("#txtPassportNumber").val();
+            patientObj.MarritalStatus = $("input:radio[name='maritalStatusList']:checked").val();
+            patientObj.HomePhone = $("#txtHomePhone").val();
+            patientObj.MobilePhone = $("#txtMobilePhone").val();
+            patientObj.Address = $("#txtAddress").val();
+            patientObj.City = $("#txtCity").val();
+            patientObj.Township = $("#txtTownship").val();
+            patientObj.KinName = $("#txtKinName").val();
+            patientObj.KinRelationship = $("#txtRelationship").val();
+            patientObj.KinAddress = $("#txtKinAddress").val();
+            patientObj.KinHomePhone = $("#txtKinHomePhone").val();
+            patientObj.KinMobilePhone = $("#txtKinMobilePhone").val();
+            // EMPLOYMENT INFORMATION
+            patientObj.Company = $("#txtCompany").val();
+            patientObj.PositionTitle = $("#txtPositionTitle").val();
+            patientObj.EmployerAddress = $("#txtEmployerAddress").val();
+            patientObj.EmployerPhoneNumber = $("#txtEmployerPhone").val();
+
+            patientObj.EnteredBy = $("#hiddenCurrentUserName").val();
+
+            $.ajax({
+                url: "../../api/PatientApi/",
+                type: 'POST',
+                data: JSON.stringify(patientObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    if (result > 0) {
+                        //alert(patientObj.Name + " has been registered successfully!");
+                        window.location.href = "PatientDetails/" + result; // passed the id to next page.
+                    }
+                    else { alert("Error while registering Patient Name = " + patientObj.Name); }
+                }
+            });
+        });
+    });
+
+</script>

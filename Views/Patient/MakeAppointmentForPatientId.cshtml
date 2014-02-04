@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "MakeAppointmentForPatientId";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Make Appointment")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/appointment-icon.png" alt="appointment icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<h2>Appointment for @ViewBag.patientName (Medical Record No.: @ViewBag.currentPatientId)</h2>
+<input type="hidden" id="hdnPatientId" value=@ViewBag.currentPatientId />
+@Html.Label("Select A Specialist: ")
+<input id="ddlSpecialist" value="0" style="width:400px; margin: 10px 10px 10px 0px;"/>
+<div id="physicianListView"></div>
+@*<div id="pager" class="k-pager-wrap"></div>*@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var specialtyDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../../api/SpecialtyApi",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model:
+                    {
+                        id: "Id" // ******IT IS VERY IMPORTANT TO SET THE ID. OTHERWISE DELET WON'T WORK!!!
+                    }
+            }
+        });
+        // create DropDownList from input HTML element
+        $("#ddlSpecialist").kendoDropDownList({
+            dataTextField: "SpecialtyName",
+            dataValueField: "Id",
+            dataSource: specialtyDataSource,
+            optionLabel: {
+                SpecialtyName: "Select A Speciality",
+                Id: "0"
+            },
+            change: onChange
+        });
+        //        // SET THE DEFAULT VALUE TO BE "IN-INFORMATION" FOR DROPDOWN LIST.
+        //        $("#ddlSpecialist").data('kendoDropDownList').value("1");
+        //        showPhysicianListView(1);
+        function onChange() {
+            var selectedSpecialtyId = $("#ddlSpecialist").val();
+            //alert("onChange value = " + selectedSpecialtyId);
+            showPhysicianListView(selectedSpecialtyId);
+        }
+        function showPhysicianListView(specialtyId) {
+            if (specialtyId > 0) {
+                var listviewHtml = "";
+                $.ajax({
+                    url: "../../api/PhysicianApi/" + specialtyId,
+                    type: "GET",
+                    data: {},
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("AjaxError calling SearchPatient() = " + textStatus + " Reason = " + errorThrown);
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result.length > 0) {
+
+                            for (var i = 0; i < result.length; i++) {
+                                listviewHtml += "<table width='98%' border='0' cellpadding='0' cellspacing='0'>";
+                                listviewHtml += "<tr>";
+                                listviewHtml += "<td valign='top'><img src='../../Images/doctor-icon.png' alt='doctor icon' width='60' height='60' /></td>";
+                                listviewHtml += "<td valign='top'>";
+                                listviewHtml += "<h3>" + result[i].Prefix + " " + result[i].Name + "[ " + result[i].Degree + " ]</h3>";
+                                listviewHtml += "<p>" + result[i].Title1 + "</p>";
+                                listviewHtml += "<p>" + result[i].Title2 + "</p>";
+                                listviewHtml += "<p>" + result[i].Title3 + "</p>";
+                                listviewHtml += "</td>";
+                                listviewHtml += "<td valign='top' align='right'>";
+                                listviewHtml += "<a href='/Patient/MakeAppointment?ids=" + $("#hdnPatientId").val() + "&ids=" + result[i].Id + "' class='k-button'>Make Appointment</a>";
+                                listviewHtml += "</td>";
+                                listviewHtml += "</tr>";
+                                listviewHtml += "</table>";
+                                listviewHtml += "<hr />";
+                            }
+
+                            $("#physicianListView").html(listviewHtml);
+
+                        } // if(result.length > 0)
+                    } // success
+                }); // ajax
+
+            } // if(specialtyId > 0)
+        }
+
+
+
+    });
+</script>
+

@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "RegisterPatientOK";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Patient Details")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/Patients-icon.png" alt="users icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+<div style="padding: 5px;">
+    @Html.Partial("_patientDetailsPartial")
+    <table width="100%">
+        <tr>
+            <td width="60%">
+                &nbsp;
+            </td>
+            <td align="right">
+                <a href="~/Patient/ViewPatientAppointments/@ViewBag.currentPatient.Id">
+                    <img src="../../Images/physician-schedule-icon.png" alt="appointment icon" width="60"
+                        height="60" />
+                    <br />
+                    View Patient Appointments </a>
+            </td>
+            <td align="right">
+                <a href="~/Patient/MakeAppointmentForPatientId/@ViewBag.currentPatient.Id">
+                    <img src="../../Images/appointment-icon.png" alt="appointment icon" width="60" height="60" />
+                    <br />
+                    Make Appointment </a>
+            </td>
+            <td align="right">
+                <a href="~/Patient/SearchPatient">
+                    <img src="../../Images/search-icon.png" alt="search icon" width="60" height="60" />
+                    <br />
+                    Search Patients </a>
+            </td>
+            <td align="right">
+                <a href="~/Patient/MedHistory/@ViewBag.currentPatient.Id">
+                    <img src="../../Images/medical-report-icon.png" alt="Medical History icon" width="60"
+                        height="60" />
+                    <br />
+                    Medical History </a>
+            </td>
+        </tr>
+    </table>
+</div>

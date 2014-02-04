@@ -1,0 +1,54 @@
+﻿@model ApexAsiaEMR.Models.LoginObjModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .newUserLink  
+    {
+        padding:10px;color:Green; font-size:12pt; font-weight:bold;
+    }
+</style>
+
+<table width="100%">
+    <tr>
+        <td valign="top" class="pageHeading" width="40%">@Html.Label("Login")</td>
+        <td  width="60%" align="left"><img src="../../Images/lock.png" alt="lock icon" /></td>
+    </tr>
+</table>
+
+<section id="loginForm">
+
+<div style="text-align:center;">
+<h2>Please log in...</h2>
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username)
+                @Html.ValidationMessageFor(m => m.Username)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+           
+        </ol>
+        <input type="submit" value="Log in" class="k-button" />
+        <div class="newUserLink">@Html.ActionLink("Add New User", "AddNewUser", "Admin")</div>
+        
+    </fieldset>
+   
+   
+}
+ </div>
+</section>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

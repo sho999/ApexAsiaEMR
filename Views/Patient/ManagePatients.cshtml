@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "ShowLatest30Patients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Manage Patients")
+        </td>
+        <td align="left" width="25%">
+            <img src="../../Images/Patients-icon.png" alt="users icon" width="60" height="60" />
+        </td>
+        <td align="right" width="25%">
+            <a href="SearchPatient">
+                <img src="../../Images/search-icon.png" alt="search icon" width="60" height="60" /></a>
+        </td>
+    </tr>
+</table>
+<div id="example" class="k-content">
+    <div id="patientsGrid">
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var patientDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../api/PatientApi",
+                    dataType: "json"
+                },
+                update: {
+                    url: function (patient) {
+                        return "../api/PatientApi/" + patient.Id
+                    },
+                    type: "POST",
+                    dataType: "json"
+                },
+                destroy: {
+                    url: function (patient) {
+                        return "../api/PatientApi/" + patient.Id
+                    },
+                    type: "DELETE",
+                    dataType: "json"
+                }
+            },
+            pageSize: 10,
+            schema: {
+                model:
+                    {
+                        id: "Id", // ******IT IS VERY IMPORTANT TO SET THE ID. OTHERWISE DELET WON'T WORK!!!
+                        fields: {
+                            Id: { editable: false, nullable: false },
+                            Name: { validation: { required: true, nullable: false} },
+                            Gender: { validation: { required: true, nullable: false} },
+                            FatherName: { validation: { required: false, nullable: true} },
+                            DateOfBirth: { validation: { required: false, nullable: true} },
+                            NrcNo: { validation: { required: false, nullable: true} },
+                            MarritalStatus: { validation: { required: false, nullable: true} },
+                            HomePhone: { validation: { required: false, nullable: true} },
+                            MobilePhone: { validation: { required: false, nullable: true} },
+                            Address: { validation: { required: false, nullable: true} },
+                            Township: { validation: { required: false, nullable: true} },
+                            City: { validation: { required: false, nullable: true} },
+                            KinName: { validation: { required: false, nullable: true} },
+                            KinRelationship: { validation: { required: false, nullable: true} },
+                            KinAddress: { validation: { required: false, nullable: true} },
+                            KinHomePhone: { validation: { required: false, nullable: true} },
+                            KinMobilePhone: { validation: { required: false, nullable: true} },
+
+                            Company: { validation: { required: false, nullable: true} },
+                            PositionTitle: { validation: { required: false, nullable: true} },
+                            EmployerAddress: { validation: { required: false, nullable: true} },
+                            EmployerPhoneNumber: { validation: { required: false, nullable: true} },
+
+                            EnteredBy: { editable: false, nullable: false },
+                            EnteredDateTime: { editable: false, nullable: false }
+                        }
+                    }
+            }
+        });
+
+        $("#patientsGrid").kendoGrid({
+            dataSource: patientDataSource,
+            pageable: true,
+            columns: [
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "150px" },
+                { field: "Id", title: "Medical Record No.", width: "110px" },
+                { field: "Name", title: "Name", width: "150px" },
+                { field: "Gender", title: "Gender", width: "50px" },
+                { field: "FatherName", title: "Father's Name", width: "150px" },
+                { field: "DateOfBirth", title: "Date Of Birth", width: "150px" },
+                { field: "NrcNo", title: "NRC No.", width: "150px" },
+                { field: "MarritalStatus", title: "Marrital Status", width: "90px" },
+                { field: "HomePhone", title: "Home Phone", width: "150px" },
+                { field: "MobilePhone", title: "Mobile Phone", width: "150px" },
+                { field: "Address", title: "Address", width: "150px" },
+                { field: "Township", title: "Township", width: "150px" },
+                { field: "City", title: "City", width: "150px" },
+                { field: "KinName", title: "Next of Kin", width: "150px" },
+                { field: "KinRelationship", title: "Relationship", width: "150px" },
+                { field: "KinAddress", title: "Kin Address", width: "150px" },
+                { field: "KinHomePhone", title: "Kin HomePhone", width: "150px" },
+                { field: "KinMobilePhone", title: "Kin MobilePhone", width: "150px" },
+
+                { field: "Company", title: "Employer Name", width: "150px" },
+                { field: "PositionTitle", title: "Position / Title", width: "150px" },
+                { field: "EmployerAddress", title: "Employer Address", width: "150px" },
+                { field: "EmployerPhoneNumber", title: "Employer Phone", width: "150px" },
+
+                { field: "EnteredBy", title: "Entered By", width: "150px" },
+                { field: "EnteredDateTime", title: "Entered DateTime", width: "150px" }
+
+                ],
+            editable: "popup"
+        });
+    });
+</script>

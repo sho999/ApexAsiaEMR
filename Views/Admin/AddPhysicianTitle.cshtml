@@ -1,0 +1,114 @@
+﻿@model ApexAsiaDAL.PhysicianTitle
+
+@{
+    ViewBag.Title = "AddPhysicianTitle";
+}
+<style>
+    .labelStyle { font-weight:bold; font-size:10pt;}
+    .textboxStyle { width:300px;}
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Add/Edit Physician Title") 
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/doctor-icon.png" alt="doctor icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>PhysicianTitle</legend>
+        <table width="100%">
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Prefix:&nbsp;</td>
+                <td width="50%" align="left">
+                     @Html.TextBoxFor(model => model.Prefix)
+                     @Html.ValidationMessageFor(model => model.Prefix)
+                     &nbsp;example - Dr. ,Prof. Dr., A/Prof. Dr. , etc 
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Full Name:&nbsp;</td>
+                <td width="50%" align="left"> 
+                    @* NOTE: I need to use @Value INSTEAD OF @value to make it working.... *@
+                    @Html.TextBoxFor(model => model.Name, new {@Value = @ViewBag.currentUserFullName})
+                   
+                </td>
+            </tr>
+             <tr>
+                <td width="50%" align="right" class="labelStyle">Specialty:&nbsp;</td>
+                <td width="50%" align="left">
+                     @Html.DropDownListFor(s => s.SpecialtyId, new SelectList(ViewBag.SpecialtyList, "SpecialtyId", "SpecialtyName", Model.SpecialtyId))
+                   
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Degree:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextBoxFor(model => model.Degree, new { @class = "textboxStyle" })
+                      @Html.ValidationMessageFor(model => model.Degree)
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Title1:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextBoxFor(model => model.Title1, new { @class = "textboxStyle" })
+                    
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Title2:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextBoxFor(model => model.Title2, new { @class = "textboxStyle" })
+                      
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Title3:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextBoxFor(model => model.Title3, new { @class = "textboxStyle" })
+                     
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Bio:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextAreaFor(model => model.Bio, new { @class = "textboxStyle" })
+                     
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">Note:&nbsp;</td>
+                <td width="50%" align="left">
+                      @Html.TextAreaFor(model => model.Note, new { @class = "textboxStyle" })
+                     
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" align="right" class="labelStyle">&nbsp;</td>
+                <td width="50%" align="left">
+                     <input type="submit" value="Save" class="k-button" />
+                </td>
+            </tr>
+        </table>
+        
+        <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+        <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
+       
+
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to Physician List", "ManagePhysicians")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,635 @@
+﻿@model ApexAsiaEMR.Models.MedHistViewModel
+@{
+    ViewBag.Title = "MedHistory";
+}
+<style>
+    .textAreaStyle
+    {
+        width: 800px;
+        height: 50px;
+        font-family: Zawgyi-One;
+    }
+    .textBoxStyle
+    {
+        width: 200px;
+        height: 15px;
+        font-family: Zawgyi-One;
+    }
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Patient Medical History")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/medical-report-icon.png" alt="med history icon" width="60"
+                height="60" />
+        </td>
+    </tr>
+</table>
+@using (Html.BeginForm("UpdateMedHistory", "Patient"))
+{
+
+    <div id="panelBarContainer" style="margin: 10px;">
+        <ul id="panelbar">
+            <li>Patient Details
+                <div>
+                    @Html.Partial("_patientDetailsPartial")
+                </div>
+            </li>
+            <li class="k-state-active"><span class="k-link k-state-selected">Patient Medical History</span>
+                <div id="tabstrip">
+                    <ul>
+                        <li class="k-state-active">Med History</li>
+                        <li>Personal History</li>
+                        <li>For Women Only</li>
+                        <li>Psychosocial Assessment</li>
+                        <li>Risk Behaviour & Life Style Assessment</li>
+                        <li>Family History</li>
+                        <li>Past Hospitalization</li>
+                        <li>Past Surgical History</li>
+                        <li>Allergy History</li>
+                        
+                    </ul>
+                    <div>
+                        <!-- Med History-->
+                        <table>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.A1YesNo)&nbsp;
+                                                @Model.Q1Description (@Model.Q1MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A1Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.A2YesNo)&nbsp;
+                                                @Model.Q2Description (@Model.Q2MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A2Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A3YesNo)&nbsp;
+                                                 @Model.Q3Description (@Model.Q3MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A3Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A4YesNo)&nbsp;
+                                                 @Model.Q4Description (@Model.Q4MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A4Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A5YesNo)&nbsp;
+                                                 @Model.Q5Description (@Model.Q5MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A5Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A6YesNo)&nbsp;
+                                                 @Model.Q6Description (@Model.Q6MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A6Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A7YesNo)&nbsp;
+                                                 @Model.Q7Description (@Model.Q7MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A7Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A8YesNo)&nbsp;
+                                                 @Model.Q8Description  <br /> (@Model.Q8MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A8Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A9YesNo)&nbsp;
+                                                 @Model.Q9Description (@Model.Q9MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A9Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A10YesNo)&nbsp;
+                                                 @Model.Q10Description (@Model.Q10MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A10Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                         <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A11YesNo)&nbsp;
+                                                 @Model.Q11Description (@Model.Q11MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A11Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A12YesNo)&nbsp;
+                                                 @Model.Q12Description (@Model.Q12MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A12Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A13YesNo)&nbsp;
+                                                 @Model.Q13Description <br /> (@Model.Q13MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A13Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A14YesNo)&nbsp;
+                                                 @Model.Q14Description (@Model.Q14MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A14Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A15YesNo)&nbsp;
+                                                 @Model.Q15Description (@Model.Q15MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A15Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A16YesNo)&nbsp;
+                                                 @Model.Q16Description (@Model.Q16MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A16Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A17YesNo)&nbsp;
+                                                 @Model.Q17Description (@Model.Q17MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A17Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A18YesNo)&nbsp;
+                                                 @Model.Q18Description (@Model.Q18MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A18Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A19YesNo)&nbsp;
+                                                 @Model.Q19Description (@Model.Q19MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A19Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A20YesNo)&nbsp;
+                                                 @Model.Q20Description (@Model.Q20MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A20Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                 @Html.CheckBoxFor(m => m.A21YesNo)&nbsp;
+                                                 @Model.Q21Description (@Model.Q21MyanmarDescription)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.A21Comment, new { @class = "textBoxStyle" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <!-- Personal History-->
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A24YesNo)&nbsp;
+                                         @Model.Q24Description (@Model.Q24MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A24Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A25YesNo)&nbsp;
+                                         @Model.Q25Description (@Model.Q25MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A25Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A26YesNo)&nbsp;
+                                         @Model.Q26Description &nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A26Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- For Women Only -->
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A27YesNo)&nbsp;
+                                         @Model.Q27Description (@Model.Q27MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A27Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A28YesNo)&nbsp;
+                                         @Model.Q28Description (@Model.Q28MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A28Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A29YesNo)&nbsp;
+                                         @Model.Q29Description (@Model.Q29MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A29Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A30YesNo)&nbsp;
+                                         @Model.Q30Description (@Model.Q30MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A30Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A31YesNo)&nbsp;
+                                         @Model.Q31Description (@Model.Q31MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A31Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.A32YesNo)&nbsp;
+                                         @Model.Q32Description (@Model.Q32MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A32Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Psychosocial Assessment -->
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.A34YesNo)&nbsp;
+                                @Model.Q34Description
+                                <br />
+                                @Html.TextAreaFor(m => m.A34Comment, new { @class = "textAreaStyle" })
+                            </div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.A35YesNo)&nbsp;
+                                @Model.Q35Description
+                                <br />
+                                @Html.TextAreaFor(m => m.A35Comment, new { @class = "textAreaStyle" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Risk Behaviour & Life Style Assessment -->
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A36YesNo)&nbsp;
+                                        @Model.Q36Description (@Model.Q36MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A36Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A37YesNo)&nbsp;
+                                        @Model.Q37Description (@Model.Q37MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A37Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A38YesNo)&nbsp;
+                                        @Model.Q38Description (@Model.Q38MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A38Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A39YesNo)&nbsp;
+                                        @Model.Q39Description (@Model.Q39MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A39Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A41YesNo)&nbsp;
+                                        @Model.Q41Description (@Model.Q41MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A41Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A42YesNo)&nbsp;
+                                        @Model.Q42Description (@Model.Q42MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A42Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.A43YesNo)&nbsp;
+                                        @Model.Q43Description (@Model.Q43MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.A43Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Family History -->
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH1YesNo)&nbsp;
+                                        @Model.Q4Description (@Model.Q4MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH1Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH2YesNo)&nbsp;
+                                        @Model.Q1Description (@Model.Q1MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                         @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH2Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH3YesNo)&nbsp;
+                                        @Model.Q2Description (@Model.Q2MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH3Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH4YesNo)&nbsp;
+                                         @Model.Q5Description (@Model.Q5MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH4Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH5YesNo)&nbsp;
+                                         @Model.Q12Description (@Model.Q12MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH5Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH6YesNo)&nbsp;
+                                        @Model.Q7Description (@Model.Q7MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH6Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH7YesNo)&nbsp;
+                                        @Model.Q20Description (@Model.Q20MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH7Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.PatientFamilyHistObj.FH8YesNo)&nbsp;
+                                        @Model.Q18Description (@Model.Q18MyanmarDescription)&nbsp;
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.PatientFamilyHistObj.FH8Comment, new { @class = "textBoxStyle" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <!--  Past Hospitalization -->
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.A22YesNo)&nbsp;
+                                @Model.Q22Description (@Model.Q22MyanmarDescription)
+                                <br />
+                                @Html.TextAreaFor(m => m.A22Comment, new { @class = "textAreaStyle" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Past Surgical History -->
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.A23YesNo)&nbsp;
+                                @Model.Q23Description (@Model.Q23MyanmarDescription)
+                                <br />
+                                @Html.TextAreaFor(m => m.A23Comment, new { @class = "textAreaStyle" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Allergy History -->
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.A40YesNo)&nbsp;
+                                @Model.Q40Description (@Model.Q40MyanmarDescription)
+                                <br />
+                                @Html.TextAreaFor(m => m.A40Comment, new { @class = "textAreaStyle" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>Vaccination History
+                <div>
+                    <div style="margin: 10px; text-align: left;">
+                        <b>Hepatitis: </b>
+                        <br />
+                        @Html.TextAreaFor(m => m.PatientVaccinationObj.Hepatitis, new { @class = "textAreaStyle" })
+                    </div>
+                    <div style="margin: 10px; text-align: left;">
+                        <b>Others: </b>
+                        <br />
+                        @Html.TextAreaFor(m => m.PatientVaccinationObj.OtherVaccination, new { @class = "textAreaStyle" })
+                    </div>
+                </div>
+            </li>
+            <li>Current medications
+                <div style="font-family: Zawgyi-One;">
+                    (ယခုလက္ရွိေန႔စဥ္ေသာက္သံုးေနေသာ ေဆးအမ်ိဳးအစား)
+                </div>
+                <div>
+                    <table width="100%">
+                        <tr>
+                            <td width="50%">
+                                <div style="height: 25px;">
+                                    (1)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication1, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (2)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication2, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (3)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication3, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (4)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication4, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (5)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication5, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (6)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication6, new { @class = "textBoxStyle" })</div>
+                            </td>
+                            <td width="50%">
+                                <div style="height: 25px;">
+                                    (7)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication7, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (8)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication8, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (9)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication9, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (10)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication10, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (11)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication11, new { @class = "textBoxStyle" })</div>
+                                <div style="height: 25px;">
+                                    (12)&nbsp;@Html.TextBoxFor(m => m.CurrentMedication.Medication12, new { @class = "textBoxStyle" })</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </li>
+        </ul>
+        @Html.HiddenFor(m => m.MedHistId)
+        @Html.HiddenFor(m => m.PatientId)
+        @Html.HiddenFor(m => m.PatientFamilyHistObj.Id)
+        <br />
+        <input id="btnSave" type="submit" value="Save" class="k-button" />
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#panelBarTest").kendoPanelBar({
+            expandMode: "single"
+        });
+
+        $("#panelbar").kendoPanelBar({
+            expandMode: "single"
+        });
+
+        $("#tabstrip").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+        });
+    });
+</script>

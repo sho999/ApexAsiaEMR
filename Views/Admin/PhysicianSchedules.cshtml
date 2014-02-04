@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "ApexAsia Medical Center - PhysicianSchedules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Physician Schedules")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/physician-schedule-icon.png" alt="doctor schedule icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+
+@Html.Label("Select A Physician: ")
+<input id="ddlPhysicians" value="1" style="width:400px; margin: 10px 10px 10px 0px;"/>
+<div id="physicianDetails" class="k-block k-success-colored" style=" width:800px; margin:5px; text-align: center;"></div>
+<div>
+    <table cellpadding="3" cellspacing="0" border="0" width="800">
+        <tr style="background-color:Menu;">
+            <th>Day</th><th>Start Time</th><th>End Time</th><th>Note</th>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b>MON</b></td>
+            <td width="250">
+                <input id="startTimepicker1"  value="" style="text-align:center;" />
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker1"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote1"  value="" size="50" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b>TUE</b></td>
+            <td width="250">
+                <input id="startTimepicker2"  value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker2"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote2" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b>WED</b></td>
+            <td width="250">
+                <input id="startTimepicker3"  value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker3"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote3" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b>THUR</b></td>
+            <td width="250">
+                <input id="startTimepicker4"   value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker4"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote4" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b>FRI</b></td>
+            <td width="250">
+                <input id="startTimepicker5"   value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker5"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote5" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b style="color:Blue;">SAT</b></td>
+            <td width="250">
+                <input id="startTimepicker6"   value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker6"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote6" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="center"><b style="color:Red;">SUN</b></td>
+            <td width="250">
+                <input id="startTimepicker0"   value="" style="text-align:center;"/>
+            </td>
+            <td width="250" align="center">
+                <input id="endTimepicker0"  value="" style="text-align:center;"/>
+            </td>
+            <td width="400" align="center">
+                <input type="text" id="txtNote0" size="50"  value="" style="text-align:center;"/>
+            </td>
+        </tr>
+        <tr align="right">
+            <td colspan="4"> <button class="k-button" id="btnSavePhysicianSchedules">Save Schedules</button></td>
+        </tr>
+    </table>
+    <p>&nbsp;</p>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#startTimepicker0").kendoTimePicker();
+        $("#endTimepicker0").kendoTimePicker();
+        var start0 = $("#startTimepicker0").kendoTimePicker().data("kendoTimePicker"); start0.min("8:00 AM"); start0.max("8:00 PM");
+        var end0 = $("#endTimepicker0").kendoTimePicker().data("kendoTimePicker"); end0.min("8:00 AM"); end0.max("8:00 PM");
+
+        $("#startTimepicker1").kendoTimePicker();
+        $("#endTimepicker1").kendoTimePicker();
+        var start1 = $("#startTimepicker1").kendoTimePicker().data("kendoTimePicker"); start1.min("8:00 AM"); start1.max("8:00 PM");
+        var end1 = $("#endTimepicker1").kendoTimePicker().data("kendoTimePicker"); end1.min("8:00 AM"); end1.max("8:00 PM");
+
+        $("#startTimepicker2").kendoTimePicker();
+        $("#endTimepicker2").kendoTimePicker();
+        var start2 = $("#startTimepicker2").kendoTimePicker().data("kendoTimePicker"); start2.min("8:00 AM"); start2.max("8:00 PM");
+        var end2 = $("#endTimepicker2").kendoTimePicker().data("kendoTimePicker"); end2.min("8:00 AM"); end2.max("8:00 PM");
+
+        $("#startTimepicker3").kendoTimePicker();
+        $("#endTimepicker3").kendoTimePicker();
+        var start3 = $("#startTimepicker3").kendoTimePicker().data("kendoTimePicker"); start3.min("8:00 AM"); start3.max("8:00 PM");
+        var end3 = $("#endTimepicker3").kendoTimePicker().data("kendoTimePicker"); end3.min("8:00 AM"); end3.max("8:00 PM");
+
+        $("#startTimepicker4").kendoTimePicker();
+        $("#endTimepicker4").kendoTimePicker();
+        var start4 = $("#startTimepicker4").kendoTimePicker().data("kendoTimePicker"); start4.min("8:00 AM"); start4.max("8:00 PM");
+        var end4 = $("#endTimepicker4").kendoTimePicker().data("kendoTimePicker"); end4.min("8:00 AM"); end4.max("8:00 PM");
+
+        $("#startTimepicker5").kendoTimePicker();
+        $("#endTimepicker5").kendoTimePicker();
+        var start5 = $("#startTimepicker5").kendoTimePicker().data("kendoTimePicker"); start5.min("8:00 AM"); start5.max("8:00 PM");
+        var end5 = $("#endTimepicker5").kendoTimePicker().data("kendoTimePicker"); end5.min("8:00 AM"); end5.max("8:00 PM");
+
+        $("#startTimepicker6").kendoTimePicker();
+        $("#endTimepicker6").kendoTimePicker();
+        var start6 = $("#startTimepicker6").kendoTimePicker().data("kendoTimePicker"); start6.min("8:00 AM"); start6.max("8:00 PM");
+        var end6 = $("#endTimepicker6").kendoTimePicker().data("kendoTimePicker"); end6.min("8:00 AM"); end6.max("8:00 PM");
+
+        $("#btnSavePhysicianSchedules").click(function () {
+            var selectPhysicianId = $("#ddlPhysicians").val();
+            if (selectPhysicianId != null && selectPhysicianId != undefined && selectPhysicianId != "" && selectPhysicianId > 0) {
+                var myScheduleArrayObj = new Object();
+                myScheduleArrayObj.PhysicianTitleId = selectPhysicianId;
+                var myScheduleArray = new Array();
+                var myScheduleObj = new Object();
+
+                for (var i = 0; i < 7; i++) {
+                    if ($("#startTimepicker" + i).val() != "" && $("#endTimepicker" + i).val() != "") {
+                        var myScheduleObj = new Object();
+                        myScheduleObj.PhysicianTitleId = $("#ddlPhysicians").val();
+                        myScheduleObj.DayOfWeekId = i;
+                        myScheduleObj.StartDateTime = $("#startTimepicker" + i).val();
+                        myScheduleObj.EndDateTime = $("#endTimepicker" + i).val();
+                        myScheduleObj.Note = $("#txtNote" + i).val();
+                        // Add this object to the Array
+                        myScheduleArray.push(myScheduleObj);
+                    }
+                }
+
+                if (myScheduleArray.length > 0) {
+                    myScheduleArrayObj.PhysicianScheculesArray = myScheduleArray;
+                    $.ajax({
+                        url: '/service/SavePhysicianSchedules',
+                        type: 'POST',
+                        data: JSON.stringify(myScheduleArrayObj),
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("AjaxError calling SavePhysicianSchedules() = " + textStatus + " Reason = " + errorThrown);
+                        },
+                        success: function (result) {
+                            if (result) {
+                                var url = "/Patient/SearchPatient";
+                                $(location).attr('href', url);
+                            }
+                            else {
+                                alert("Sorry! Encounter technical issues while saving Physician schedules to the Server. Please report this issue to your IT dept...");
+                            }
+
+                        },
+                        async: true
+                    });
+                }
+            }
+        });
+
+
+        var physicianDataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "../../api/PhysicianApi",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                model:
+                    {
+                        id: "Id" // ******IT IS VERY IMPORTANT TO SET THE ID. OTHERWISE DELET WON'T WORK!!!
+                    }
+            }
+        });
+        // create DropDownList from input HTML element
+        $("#ddlPhysicians").kendoDropDownList({
+            dataTextField: "Name",
+            dataValueField: "Id",
+            dataSource: physicianDataSource,
+            optionLabel: "Select A Physician",
+            index: 0,
+            change: onChange
+        });
+
+        // SET THE DEFAULT VALUE TO BE "IN-INFORMATION" FOR DROPDOWN LIST.
+        $("#ddlPhysicians").data('kendoDropDownList').value("-1");
+
+        function clearTextBoxValues() {
+            for (var i = 0; i < 7; i++) {
+                $("#startTimepicker" + i).val("");
+                $("#endTimepicker" + i).val("");
+                $("#txtNote" + i).val("");
+            }
+        }
+
+        function onChange() {
+            var selectedPhysicianId = $("#ddlPhysicians").val();
+            if (selectedPhysicianId === "" || selectedPhysicianId === null || selectedPhysicianId === undefined) {
+                $("#physicianDetails").html("");
+            }
+            else {
+                $.ajax({
+                    url: "../../api/PhysicianApi/" + selectedPhysicianId,
+                    type: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("AjaxError = " + textStatus + " Reason = " + errorThrown);
+                    },
+                    success: function (result) {
+                        if (result) {
+                            $("#physicianDetails").html("");
+                            $("#physicianDetails").append("<b>" + result.Prefix + " " + result.Name + "[" + result.Degree + "]</b>");
+                            $("#physicianDetails").append("<br />");
+                            if (result.Title1 !== null) {
+                                $("#physicianDetails").append(result.Title1 + "<br />");
+                            }
+                            if (result.Title2 !== null) {
+                                $("#physicianDetails").append(result.Title2 + "<br />");
+                            }
+                            if (result.Title3 !== null) {
+                                $("#physicianDetails").append(result.Title3 + "<br />");
+                            }
+                            console.log(result);
+                            // NOW WE NEED TO POPULATE THE EXISTING SCHEDULE IF THERE IS ANY
+                            var physicianIdObj = new Object();
+                            physicianIdObj.physicianId = selectedPhysicianId;
+
+                            $.ajax({
+                                url: "/service/GetPhysicianSchedulesById",
+                                type: 'POST',
+                                data: JSON.stringify(physicianIdObj),
+                                dataType: 'json',
+                                contentType: 'application/json; charset=utf-8',
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    alert("AjaxError while calling service/GetPhysicianSchedulesById =>" + textStatus + " Reason = " + errorThrown);
+                                },
+                                success: function (result) {
+                                    clearTextBoxValues();
+                                    if (result.length > 0) {
+                                        for (var p = 0; p < result.length; p++) {
+                                            //alert(result[p].DayOfWeekId + " " + result[p].StartDateTime + " " + result[p].EndDateTime + " " + result[p].Note);
+                                            $("#startTimepicker" + result[p].DayOfWeekId).val(result[p].StartDateTime);
+                                            $("#endTimepicker" + result[p].DayOfWeekId).val(result[p].EndDateTime);
+                                            $("#txtNote" + result[p].DayOfWeekId).val(result[p].Note);
+                                        }
+                                    }
+                                    //console.log(result);
+                                }
+                            });
+                        }
+                    }
+                });
+            } // if
+        }
+
+    });
+</script>

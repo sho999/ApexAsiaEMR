@@ -1,0 +1,156 @@
+﻿@model List<ApexAsiaDAL.viewAppointment>
+@{
+    ViewBag.Title = "AllAppointments";
+}
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("All Appointments")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/appointment-icon.png" alt="appointment icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+
+ <div class="k-block">
+    <div style="margin:3px;">
+    &nbsp;
+    <b>From Date: </b><input type="text" id="fromDatepicker" size="30" />&nbsp;
+    <b>To Date: </b><input type="text" id="toDatepicker" size="30" />&nbsp;
+    <b>Include Has Seen?</b><input type="checkbox" id="checkboxHasSeen" />&nbsp;
+    <input type="button" id="btnGo" value="Go!"/>
+    <span style="color:Red; font-weight:bold" id="dateError"></span>
+    </div>
+ </div>
+ <br />
+ <table width="100%">
+    <tr>
+        <td style=" width:15%;" valign="top">
+            <div id="appointmentSummaryTable" class="CSSTableGenerator"></div>
+        </td>
+        <td style=" width:85%;" valign="top">
+            <div id="appointmentTable" class="CSSTableGenerator"></div>
+        </td>
+    </tr>
+ </table>
+<p> &nbsp;</p>
+   
+<script type="text/javascript">
+    $(document).ready(function () {
+        // create DatePickers
+        $("#fromDatepicker").kendoDatePicker({
+            format: "dd MMMM yyyy",
+            value: new Date.today()
+        });
+
+        $("#toDatepicker").kendoDatePicker({
+            format: "dd MMMM yyyy",
+            value: new Date.today()
+        });
+
+        $("#btnGo").click(function () {
+            $("#dateError").html("");
+            var isIncludeaHasSeen = $("#checkboxHasSeen").is(':checked');
+            
+            var dateFrom = $("#fromDatepicker").val();
+            var dateTo = $("#toDatepicker").val();
+
+            if (dateTo < dateFrom) {
+                $("#dateError").html("To Date must be later than From Date!");
+                return false;
+            }
+            drawAppointmentSummaryByDate(dateFrom, dateTo, isIncludeaHasSeen);
+        });
+
+
+    });
+
+    function drawAppointmentSummaryByDate(fromDate, toDate, includeHasSeen) {
+        var parameters = "{ 'fromDateTime': '" + fromDate + "','toDateTime': '" + toDate + "','includeHasSeen': '" + includeHasSeen + "' }";
+       
+        $.ajax({
+            url: "/Service/GetAppointmentSummaryByDate/",
+            type: 'POST',
+            data: parameters,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("AjaxError while calling GetAppointmentSummaryByDate = " + textStatus + " Reason = " + errorThrown);
+            },
+            success: function (result) {
+                console.log(result);
+                $("#appointmentTable").html("");
+                var htmlAppointmentSummary = "";
+                if (result) {
+                    htmlAppointmentSummary += "<table cellpadding='0' cellspacing='0' border='0'>";
+                    htmlAppointmentSummary += "<tr>";
+                    htmlAppointmentSummary += "<td>Doctor's Name</td><td>Total</td>";
+                    htmlAppointmentSummary += "</tr>";
+                    for (var a = 0; a < result.length; a++) {
+                        htmlAppointmentSummary += "<tr>";
+                        var paramObject = new Object();
+                        paramObject.physicianId = result[a].PhysicianId;
+                        paramObject.fromDate = fromDate;
+                        paramObject.toDate = toDate;
+                        paramObject.includeHasSeen = includeHasSeen;
+
+                        //alert(paramObject.physicianId + "|" + paramObject.fromDate + "|" + paramObject.toDate  + "|" + paramObject.includeHasSeen);
+                        htmlAppointmentSummary += "<td><a href='#' onclick='javascript:drawApppointmentsForPhysicianId(" + JSON.stringify(paramObject) + ")'>" + result[a].DoctorName + "</a></td>";
+                        //htmlAppointmentSummary += "<td>" + kendo.toString(parseJsonDateTime(result[a].AppointmentDate), "dd MMM yyyy") + "</td>";
+                        htmlAppointmentSummary += "<td>" + result[a].Total + "</td>";
+                        htmlAppointmentSummary += "</tr>";
+                    }
+                    htmlAppointmentSummary += "</table>";
+                    $("#appointmentSummaryTable").html(htmlAppointmentSummary);
+                }
+            }
+
+        });
+
+    }
+
+    function drawApppointmentsForPhysicianId(paramObject) {
+        var passDataString = "{ 'physicianId': '" + paramObject.physicianId + "', 'fromDateTime' : '" + paramObject.fromDate + "', 'toDateTime': '" + paramObject.toDate + "', 'includeHasSeen' : '" + paramObject.includeHasSeen + "' }";
+        $.ajax({
+                url: "/Service/GetAppointmentByPhysicianId/",
+                type: 'POST',
+                data: passDataString,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("AjaxError while calling GetAppointmentByPhysicianId = " + textStatus + " Reason = " + errorThrown);
+                },
+                success: function (result) {
+                    $("#appointmentTable").html("");
+                    var htmlAppointments = "";
+                    if (result) {
+                        htmlAppointments += "<table cellpadding='0' cellspacing='0' border='0'>";
+                        htmlAppointments += "<tr>";
+                        htmlAppointments += "<td>Doctor's Name</td><td>Patient's Name</td><td>Title</td><td>Date</td><td>Start Time</td><td>End Time</td>";
+                        htmlAppointments += "<td>Day</td><td>Reason For Appointment</td><td>Home Visit</td><td>Has Seen</td>"
+                        htmlAppointments += "<td>&nbsp;</td>";
+                        htmlAppointments += "</tr>";
+                        for (var a = 0; a < result.length; a++) {
+                            var medHistoryUrl = "/Patient/MedHistory/" + result[a].PatientId;
+                            var seeAppointmentUrl = "/Report/SeeAppointment/" + result[a].AppointmentId;
+                            htmlAppointments += "<tr>";
+                            htmlAppointments += "<td>" + result[a].DoctorName + "</td><td>" + result[a].PatientName + "</td><td>" + result[a].Title + "</td>";
+                            htmlAppointments += "<td>" + kendo.toString(parseJsonDateTime(result[a].StartDateTime), "dd MMM yyyy") + "</td>";
+                            htmlAppointments += "<td>" + kendo.toString(parseJsonDateTime(result[a].StartDateTime), "HH:mm tt") + "</td>";
+                            htmlAppointments += "<td>" + kendo.toString(parseJsonDateTime(result[a].EndDateTime), "HH:mm tt") + "</td>";
+                            htmlAppointments += "<td>" + result[a].Day + "</td><td>" + result[a].ReasonForAppointment + "</td>";
+                            htmlAppointments += "<td>" + result[a].IsHomeVisit + "</td><td>" + result[a].HasSeen + "</td>";
+                            htmlAppointments += "<td><a href='" + medHistoryUrl + "'><img src='../../Images/medHistory24x24.png' alt='medHistory24x24' title='Medical History' /></a></td>";
+                            //htmlAppointments += "<td><a href='" + seeAppointmentUrl + "'><img src='../../Images/physicianAppointment24x24.png' alt='physicianAppointment24x24' title='See this Appointment' /></a></td>";
+
+                            htmlAppointments += "</tr>";
+                        }
+                        htmlAppointments += "</table>";
+                        $("#appointmentTable").html(htmlAppointments);
+                    } // if
+                } // success
+            });
+    }
+</script>
+

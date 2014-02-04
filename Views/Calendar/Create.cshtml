@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")"></script>
+    <link href="@Url.Content("~/Content/layout.css")" rel="stylesheet" type="text/css" />
+   	<style>
+   	    p, body, td { font-family: Tahoma, Arial, Sans-Serif; font-size: 10pt; }
+   	</style>
+    <title></title>
+</head>
+
+<body style="padding:10px">
+    <form id="f" method="post" action="@Url.Action("New")">
+    
+    <h3>Add New Appintment</h3>
+    <div>PatientId @Html.DisplayText("PatientId")</div>    
+    <div>PhysicianId @Html.DisplayText("PhysicianId")</div>
+    <div>Title</div>
+    <div>@Html.TextBox("Text")</div>
+    
+    <div>Start</div>
+    <div>@Html.TextBox("Start")</div>
+
+    <div>End</div>
+    <div>@Html.TextBox("End")</div>
+
+    <div>Reason For Appointment</div>
+    <div>@Html.TextBox("ReasonForAppointment")</div>
+
+    <div>Home Visit <input  id="IsHomeVisit" name="IsHomeVisit" type="checkbox" /></div>
+
+    @Html.Hidden("PatientId")
+    @Html.Hidden("PhysicianId")
+    <div class="space">
+        <input type="submit" value="Save" />
+        <input type="button" id="btnClose" value="Cancel" />
+    </div>
+    <div class="space">&nbsp;</div>
+    </form>
+    
+    <script type="text/javascript">
+        $("#btnClose").click(function() {
+            close();
+        });
+        function close(result) {
+            //alert("close()");
+            if (parent && parent.DayPilot && parent.DayPilot.ModalStatic) {
+                parent.DayPilot.ModalStatic.close(result);
+            }
+        }
+
+        $("#f").submit(function () {
+            var f = $("#f");
+            $.post(f.action, f.serialize(), function (result) {
+                //alert(result);
+                close(eval(result));
+            });
+            return false;
+        });
+
+        $(document).ready(function () {
+            $("#Text").focus();
+        });
+    
+    </script>    
+</body>
+</html>

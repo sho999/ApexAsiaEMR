@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ApexAsiaDAL.PhysicianView>
+
+@{
+    ViewBag.Title = "ManagePhysicians";
+}
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Manage Physicians")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/doctor-icon.png" alt="doctor icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+
+<div class="CSSTableGenerator">
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>Prefix</td><td>Full Name</td><td>Specialty</td>
+        <td>Title1</td><td>Title2</td><td>Title3</td><td>&nbsp;</td>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Prefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SpecialtyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title3)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "AddPhysicianTitle", new { id = item.UserId})
+        </td>
+    </tr>
+}
+
+</table>
+</div>
+<p>&nbsp;</p>

@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "ManageUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Manage Users")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/users.png" alt="users icon" />
+        </td>
+    </tr>
+</table>
+
+<div id="example" class="k-content">
+    <div id="grid"></div>
+
+    @* reference to this doc for doing CRUD 
+        http://demos.kendoui.com/web/grid/editing-popup.html
+        video tutorial http://www.kendoui.com/blogs/teamblog/posts/12-07-26/hello_kendo_ui_part_2_ndash_grid_crud.aspx
+    *@
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var crudServiceBaseUrl = "http://demos.kendoui.com/service",
+                            dataSource = new kendo.data.DataSource({
+                                transport: {
+                                    read: {
+                                        url: "../api/userapi",
+                                        dataType: "json"
+                                    },
+                                    update: {
+                                        url: function(user){
+                                            return "../api/userapi/" + user.Id 
+                                        },
+                                        type: "POST",
+                                        dataType: "json"
+                                    },
+                                    destroy: {
+                                        url: function(user){
+                                            return "../api/userapi/" + user.Id 
+                                        },
+                                        type: "DELETE",
+                                        dataType: "json"
+                                    },
+                                    create: {
+                                        url: "../api/userapi",
+                                        type: "PUT",
+                                        dataType: "json"
+                                       
+                                    }
+                                    //                                    parameterMap: function (options, operation) {
+                                    //                                        if (operation !== "read" && options.models) {
+                                    //                                            return { models: kendo.stringify(options.models) };
+                                    //                                        }
+                                    //                                    }
+                                },
+                                //batch: true,
+                                pageSize: 10,
+                                schema: {
+                                    model:
+                                        {
+                                            id: "Id",
+                                            fields: {
+                                                Id:{editable: false, nullable: false},
+                                                Username: { validation: { required: true}, nullable:false },
+                                                Password: { validation: { required: true }, nullable: false },
+                                                FullName: {validation: {required: true}, nullable:false},
+                                                Email: {validation: {required: false, nullable:true}},
+                                                PasswordQuestion: { validation: { required: true }, nullable: false },
+                                                PasswordAnswer: { validation: { required: true }, nullable: false },
+                                                Comment: {validation: {required: false}, nullable: true}
+                                            }
+                                        }
+                                }
+                            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+
+                //height: 430,
+                toolbar: ["create"],
+                columns: [
+                                { field: "Id", title: "Id", width: "25px" },
+                                { field: "Username", title: "User Name",
+                                    template: "#= buildManageUserRolesLink(Id, Username)#", width: "100px"
+                                },
+                                
+                                { field: "Password", title: "Password", width: "100px" },
+                                { field: "FullName", title: "Full Name", width: "100px" },
+                                { field: "Email", title: "Email", width: "100px" },
+                                { field: "PasswordQuestion", title: "Password Question", width: "100px" },
+                                { field: "PasswordAnswer", title: "Password Answer", width: "100px" },
+                                { field: "Comment", title: "Comment", width: "100px" },
+                                { command: ["edit", "destroy"], title: "&nbsp;"}],
+                editable: "popup"
+            });
+        });
+
+
+        function buildManageUserRolesLink(userId, userName) {
+            var href1 = "ManageUserRoles/" + userId;
+            var myHref = "<a href='" + href1 + "'>" + userName + "</a>";
+            return myHref;
+        }
+    </script>
+</div> @*closing example*@

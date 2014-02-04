@@ -1,0 +1,93 @@
+﻿@*@model ApexAsiaEMR.Models.AuthModels.UserModel*@
+
+@model ApexAsiaDAL.User
+
+@{
+    ViewBag.Title = "AddNewUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .labelStyle { font-weight:bold; font-size:10pt;}
+    .textboxStyle { width:300px;}
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" width="50%" class="pageHeading">
+            @Html.Label("Add New User")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/users.png" alt="users icon" />
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+     <fieldset>
+        <legend>Registration Form</legend>
+        <table width="100%">
+            
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Full Name:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.FullName, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">User Name:&nbsp;</td>
+                <td width="50%">@Html.TextBoxFor(m => m.Username)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Password:&nbsp;</td>
+                <td>@Html.PasswordFor(m => m.Password)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Email:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.Email, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Password Question:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.PasswordQuestion, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Password Answer:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.PasswordAnswer, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Street Address:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.StreetAddress, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Township:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.Township)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">City:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.City)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Home Phone:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.HomePhone)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">MobilePhone:&nbsp;</td>
+                <td>@Html.TextBoxFor(m => m.MobilePhone)</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">Comment:&nbsp;</td>
+                <td>@Html.TextAreaFor(m => m.Comment, new { @class = "textboxStyle" })</td>
+            </tr>
+            <tr>
+                <td class="labelStyle" width="50%" align="right">&nbsp;</td>
+                <td><input type="submit" value="Add New User" /></td>
+            </tr>
+        </table>
+        
+        
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

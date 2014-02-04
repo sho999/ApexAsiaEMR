@@ -1,0 +1,133 @@
+﻿@model ApexAsiaDAL.PhysicianTitle
+
+@{
+    ViewBag.Title = "UpdateManagePhysicians";
+}
+<style>
+    .textAreaStyle {width: 800px; height: 50px; font-family:Zawgyi-One;}
+    .textBoxStyle {width: 300px; height: 15px; font-family:Zawgyi-One;}
+</style>
+<table width="100%">
+    <tr>
+        <td valign="top" align="left" class="pageHeading" width="50%">
+            @Html.Label("Edit Physician's Title")
+        </td>
+        <td align="left" width="50%">
+            <img src="../../Images/doctor-icon.png" alt="doctor icon" width="60" height="60" />
+        </td>
+    </tr>
+</table>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>PhysicianTitle</legend>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UserId)
+        
+        <table width="100%">
+            <tr>
+                <td align="right"><b>Prefix :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Prefix)
+                    @Html.ValidationMessageFor(model => model.Prefix)
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b>Name :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b>Degree :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Degree)
+                    @Html.ValidationMessageFor(model => model.Degree)
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b>Title1 :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Title1)
+                    @Html.ValidationMessageFor(model => model.Title1)
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b>Title2 :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Title2)
+                    @Html.ValidationMessageFor(model => model.Title2)
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><b>Title3 :</b></td>
+                <td align="left">
+                    @Html.EditorFor(model => model.Title3)
+                    @Html.ValidationMessageFor(model => model.Title3)
+                </td>
+            </tr>
+        </table>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MyanmarTitle)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MyanmarTitle)
+            @Html.ValidationMessageFor(model => model.MyanmarTitle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PhotoPath)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PhotoPath)
+            @Html.ValidationMessageFor(model => model.PhotoPath)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Bio)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Bio)
+            @Html.ValidationMessageFor(model => model.Bio)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Note)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Note)
+            @Html.ValidationMessageFor(model => model.Note)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastUpdated)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastUpdated)
+            @Html.ValidationMessageFor(model => model.LastUpdated)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SpecialtyId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SpecialtyId)
+            @Html.ValidationMessageFor(model => model.SpecialtyId)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Physician List", "ManagePhysicians")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
